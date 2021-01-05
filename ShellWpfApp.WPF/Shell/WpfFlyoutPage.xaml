@@ -1,0 +1,107 @@
+﻿<controls:FormsContentPage x:Class="ShellWpfApp.WPF.Shell.WpfFlyoutPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ShellWpfApp.WPF.Shell"
+             xmlns:local2="clr-namespace:ShellWpfApp"
+             xmlns:controls="clr-namespace:Xamarin.Forms.Platform.WPF.Controls;assembly=Xamarin.Forms.Platform.WPF"
+             xmlns:wpf="clr-namespace:ShellWpfApp.WPF"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d" 
+             Title="fda"
+             x:Name="FormsPageXamlWpf"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <controls:FormsContentPage.Resources>
+        <local:XFImageSourceToWpfImageSourceConverter x:Key="XfImageSourceToWpfImageSourceConverter"></local:XFImageSourceToWpfImageSourceConverter>
+    </controls:FormsContentPage.Resources>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Background="{x:Static wpf:Contants.PrimaryColor}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Width="35"
+                    Height="35"
+                    HorizontalAlignment="Left"
+                    Margin="15,0"
+                    Content="="
+                    FontSize="25"
+                    FontStretch="Medium"
+                    FontWeight="Bold"
+                    Background="Transparent"
+                    Foreground="White"
+                    x:Name="hambrger"
+                    Click="Hambrger_OnClick"
+                    ></Button>
+            <Label x:Name="PageTitleLabel"
+                   Content="Title"
+                   Grid.Column="1"
+                   VerticalAlignment="Center"
+                   Margin="0,0"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="White"></Label>
+        </Grid>
+       
+       <Grid Grid.Row="1">
+           <ContentControl x:Name="ContentControl">
+         
+           </ContentControl>
+       </Grid>
+        <Grid Grid.Row="1"
+              Background="#22000000"
+              x:Name="COntainerGrid"
+              TouchDown="COntainerGrid_OnTouchDown"
+              MouseDown="COntainerGrid_OnMouseDown"
+              Visibility="Collapsed">
+
+        </Grid>
+        <Border Background="LightGray"
+                Width="250"
+                Margin="-250,0,0,0"
+                Visibility="Collapsed"
+                HorizontalAlignment="Left"
+               Opacity="1"
+                Grid.Row="1"
+                x:Name="FlyoutView"
+        >
+        <Grid Background="White"
+              Width="250"
+              HorizontalAlignment="Left">
+            <ListView Background="Transparent"
+                      ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=FlyoutItems}"
+                      SelectionChanged="Selector_OnSelectionChanged"
+                      >
+                <ListView.ItemTemplate>
+                    <DataTemplate >
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+  
+                            <!--<visualBasic:Interaction.Triggers>
+                                            <visualbasic:
+                                </visualBasic:Interaction.Triggers>-->
+                            <!--<Grid Width="30"
+                                     Height="30"
+                                     Background="Blue"></Grid>-->
+                            <!--{Binding Icon,Converter={StaticResource XfImageSourceToWpfImageSourceConverter}}-->
+                            <!--/ShellWpfApp.WPF;component/Resources/icon_about.png-->
+                                <Image Source="{Binding Icon,Converter={StaticResource XfImageSourceToWpfImageSourceConverter}}"
+                                   Width="30"
+                                   Height="30"></Image>
+                            <Label Content="{Binding Title}"
+                                   HorizontalAlignment="Center"
+                                   FontSize="14"
+                                   Foreground="Black"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        </Border>
+    </Grid>
+</controls:FormsContentPage>

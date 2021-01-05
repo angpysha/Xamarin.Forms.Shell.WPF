@@ -1,0 +1,68 @@
+﻿<Grid x:Class="ShellWpfApp.WPF.Shell.ShellItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ShellWpfApp.WPF.Shell"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="White">
+    <Grid.Resources>
+        <local:TabWidthConverter x:Key="TabWidthConverter"></local:TabWidthConverter>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+       <!--<RowDefinition Height="40"></RowDefinition>-->
+       <RowDefinition Height="*"></RowDefinition>
+       <RowDefinition Height="40"></RowDefinition>
+    </Grid.RowDefinitions>
+    <Grid x:Name="SectionGrid">
+        <ContentControl x:Name="SectionControl" x:FieldModifier="public">
+
+        </ContentControl>
+    </Grid>
+
+    <Border Grid.Row="1"
+            Background="LightGray"
+            x:Name="BottomBarView"
+            >
+        <Grid Background="White" Margin="0,1,0,0">
+            <ListView ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellItemView}},Path=ShellSections}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                      SelectionChanged="Selector_OnSelectionChanged"
+                      >
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate >
+                        <!--Width="{Binding RelativeSource={RelativeSource AncestorType=ListView},Path=ActualWidth}"
+                        ItemWidth="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellItemView}},Path=TabWidth}"-->
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                            <WrapPanel.ItemWidth>
+                                <MultiBinding Converter="{StaticResource TabWidthConverter}">
+                                    <Binding RelativeSource="{RelativeSource AncestorType=ListView}" Path="ActualWidth"></Binding>
+                                    <Binding RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type local:ShellItemView}}" Path="ItemsCount"></Binding>
+                                </MultiBinding>
+                            </WrapPanel.ItemWidth>
+                        </WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Label Content="{Binding Title}" HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"></Label>
+
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="MouseDown">
+                                   
+                                    <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellItemView}},Path=TabClickCommand}"
+                                                           CommandParameter="{Binding .}"></b:InvokeCommandAction>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Border>
+</Grid>

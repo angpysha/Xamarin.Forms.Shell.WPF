@@ -1,0 +1,262 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
+using ShellWpfApp.WPF.Annotations;
+using Xamarin.Forms;
+using Xamarin.Forms.Internals;
+using WpfGrid = System.Windows.Controls.Grid;
+
+namespace ShellWpfApp.WPF.Shell
+{
+    public class ShellItemRenderer : ShellItemView,IFlyoutBehaviorObserver,IAppearanceObserver, INotifyPropertyChanged
+    {
+        
+        internal ShellRenderer ShellContext { get; set; }
+
+        private ShellSection _shellSection;
+
+        private Page DisplayedPage;
+        IShellItemController ShellItemController => ShellItem as IShellItemController;
+
+        private ShellSection ShellSection
+        {
+            get => _shellSection;
+            set
+            {
+                if (_shellSection == value)
+                    return;
+                var oldValue = _shellSection;
+
+                if (_shellSection != null)
+                {
+                    ((IShellSectionController) _shellSection).RemoveDisplayedPageObserver(this);
+                }
+                _shellSection = value;
+
+                if (value != null)
+                {
+                    OnShellSectionChanged(oldValue, value);
+                    ((IShellSectionController)value).AddDisplayedPageObserver(this,UpdateDisplayedPage);
+                }
+                UpdateBottomBar();
+            }
+        }
+
+        private void OnShellSectionChanged(ShellSection oldValue, ShellSection value)
+        {
+            
+            ShellSectionRenderer.NavigateToShellSection(value);
+        }
+
+        private void UpdateDisplayedPage(Page obj)
+        {
+            if (DisplayedPage != null)
+            {
+                DisplayedPage.PropertyChanged -= DisplayedPageOnPropertyChanged;
+            }
+
+            DisplayedPage = obj;
+
+            if (DisplayedPage != null)
+            {
+                DisplayedPage.PropertyChanged += DisplayedPageOnPropertyChanged;
+            }
+
+            UpdateBottomBarVisibility();
+            UpdatePageTitle();
+            UpdateToolbar();
+        }
+
+        private void UpdateToolbar()
+        {
+            
+
+        }
+
+        private void UpdatePageTitle()
+        {
+            
+
+        }
+
+        private void DisplayedPageOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            //if (e.PropertyName == Shell.TabBarIsVisibleProperty.PropertyName)
+            //{
+            //    UpdateBottomBarVisibility();
+            //}
+            //else if (e.PropertyName == Page.TitleProperty.PropertyName)
+            //{
+            //    UpdatePageTitle();
+            //}
+            //else if (e.PropertyName == Shell.NavBarIsVisibleProperty.PropertyName)
+            //{
+            //    UpdateNavBarVisibility();
+            //}
+
+        }
+
+        public override float TabWidth => (float)(BottomBarView.ActualWidth / ShellItem.Items?.Count ?? 0);
+
+        public override int ItemsCount => ShellItem.Items?.Count ?? 0;
+
+      //  public ShellItem ShreItem { get; set; }
+        IShellController ShellController => ShellContext?.Element;
+
+        private ShellSectionRenderer ShellSectionRenderer { get; set; }
+
+        public ShellItemRenderer()
+        {
+          //  Background = new System.Windows.Media.SolidColorBrush(Colors.Red);
+          SectionControl.Content = ShellSectionRenderer = new ShellSectionRenderer();
+          
+        //  ShellSectionRenderer.Shell = ShellContext?.Element;
+        }
+
+        public void OnFlyoutBehaviorChanged(FlyoutBehavior behavior)
+        {
+            
+        }
+
+        public void OnAppearanceChanged(ShellAppearance appearance)
+        {
+            
+        }
+
+        public void NavigateToShellItem(ShellItem shellItem, bool animated = false)
+        {
+           // var 
+           UnHookEvents(shellItem);
+
+           if (shellItem?.CurrentItem?.CurrentItem == null)
+               return;
+           
+           ShellItem = shellItem;
+           ShellSection = shellItem.CurrentItem;
+           HookEvents(shellItem);
+        }
+
+        private void HookEvents(ShellItem shellItem)
+        {
+            if (ShellItem == null)
+                return;
+            shellItem.PropertyChanged += ShellItemOnPropertyChanged;
+            ShellController.StructureChanged += ShellControllerOnStructureChanged;
+            ShellItemController.ItemsCollectionChanged += ShellItemControllerOnItemsCollectionChanged;
+            foreach (var child in ((IShellItemController)ShellItem).GetItems())
+            {
+                HookChildEvents(child);
+            }
+        }
+
+        private void ShellItemControllerOnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            
+
+        }
+
+        private void HookChildEvents(ShellSection child)
+        {
+            
+            ((IShellSectionController)child).NavigationRequested += OnNavigationRequested;
+        }
+
+        private void UnHookChildEvents(ShellSection child)
+        {
+
+            ((IShellSectionController)child).NavigationRequested -= OnNavigationRequested;
+        }
+
+        private void OnNavigationRequested(object sender, NavigationRequestedEventArgs e)
+        {
+            
+
+        }
+
+
+        private void UnHookEvents(ShellItem shellItem)
+        {
+            if (ShellItem == null)
+                return;
+            foreach (var child in ((IShellItemController)shellItem).GetItems())
+            {
+                UnHookChildEvents(child);
+            }
+            shellItem.PropertyChanged -= ShellItemOnPropertyChanged;
+            ShellController.StructureChanged -= ShellControllerOnStructureChanged;
+            ShellItemController.ItemsCollectionChanged -= ShellItemControllerOnItemsCollectionChanged;
+
+        }
+
+        private void ShellControllerOnStructureChanged(object sender, EventArgs e)
+        {
+            UpdateBottomBarVisibility();
+        }
+
+        private void ShellItemOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == ShellItem.CurrentItemProperty.PropertyName)
+            {
+                ShellSection = ShellItem.CurrentItem;
+                ShellSectionRenderer.NavigateToShellSection(ShellSection);
+            }
+
+            //if (e.PropertyName == Xamarin.Forms.Shell.TabBarIsVisibleProperty.PropertyName)
+            //{
+            //    UpdateBottomBarVisibility();
+            //}
+        }
+
+        public void InitShellData()
+        {
+
+            ShellSectionRenderer.Shell = ShellContext?.Element;
+            ShellSectionRenderer.ShellContext = ShellContext;
+        }
+
+        public void UpdateData()
+        {
+            RaisePropertyChanged(nameof(ItemsCount));
+        }
+
+        private void UpdateBottomBarVisibility()
+        {
+            var visible = ((IShellItemController) ShellItem)?.ShowTabs ?? false;
+            BottomBarView.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+            if (visible)
+            {
+                //Grid.SetRowSpan(SectionGrid,1);
+                WpfGrid.SetRowSpan(SectionGrid,1);
+            }
+            else
+            {
+                WpfGrid.SetRowSpan(SectionGrid,2);
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void UpdateBottomBar()
+        {
+            ShellSections.Clear();
+            var items = ShellItem.Items;
+            foreach (var shellSection in items)
+            {
+                ShellSections.Add(shellSection);
+            }
+        }
+    }
+}
