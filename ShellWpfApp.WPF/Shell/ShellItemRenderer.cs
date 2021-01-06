@@ -140,7 +140,7 @@ namespace ShellWpfApp.WPF.Shell
            
            ShellItem = shellItem;
            ShellSection = shellItem.CurrentItem;
-           HookEvents(shellItem);
+           HookEvents(ShellItem);
         }
 
         private void HookEvents(ShellItem shellItem)
@@ -150,7 +150,7 @@ namespace ShellWpfApp.WPF.Shell
             shellItem.PropertyChanged += ShellItemOnPropertyChanged;
             ShellController.StructureChanged += ShellControllerOnStructureChanged;
             ShellItemController.ItemsCollectionChanged += ShellItemControllerOnItemsCollectionChanged;
-            foreach (var child in ((IShellItemController)ShellItem).GetItems())
+            foreach (var child in ShellItemController.GetItems())
             {
                 HookChildEvents(child);
             }
@@ -177,7 +177,7 @@ namespace ShellWpfApp.WPF.Shell
         private void OnNavigationRequested(object sender, NavigationRequestedEventArgs e)
         {
             
-
+           ShellSectionRenderer.NavigateToContent(e, (ShellSection) sender);
         }
 
 
@@ -205,7 +205,7 @@ namespace ShellWpfApp.WPF.Shell
             if (e.PropertyName == ShellItem.CurrentItemProperty.PropertyName)
             {
                 ShellSection = ShellItem.CurrentItem;
-                ShellSectionRenderer.NavigateToShellSection(ShellSection);
+                //ShellSectionRenderer.NavigateToShellSection(ShellSection);
             }
 
             //if (e.PropertyName == Xamarin.Forms.Shell.TabBarIsVisibleProperty.PropertyName)
@@ -219,6 +219,7 @@ namespace ShellWpfApp.WPF.Shell
 
             ShellSectionRenderer.Shell = ShellContext?.Element;
             ShellSectionRenderer.ShellContext = ShellContext;
+            ShellSectionRenderer.ShellItem = ShellItem;
         }
 
         public void UpdateData()

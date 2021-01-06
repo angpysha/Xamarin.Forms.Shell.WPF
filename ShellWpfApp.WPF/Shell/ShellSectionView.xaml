@@ -4,9 +4,55 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ShellWpfApp.WPF.Shell"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Frame x:Name="SectionFrame" NavigationUIVisibility="Hidden">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="40"></RowDefinition>
+        <RowDefinition Height="*"></RowDefinition>
+    </Grid.RowDefinitions>
+    <Grid Background="White" x:Name="TopTabContainer">
+        <ListView x:Name="TopTab" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellSectionView}},Path=ShellContents}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                         <Label Content="{Binding Title}"></Label>
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="MouseDown">
+                                <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellSectionView}},Path=TopTabPressedCommand}"
+                                                       CommandParameter="{Binding .}"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                        <WrapPanel.ItemWidth>
+                            <MultiBinding Converter="{StaticResource TabWidthConverter}">
+                                <Binding RelativeSource="{RelativeSource AncestorType=ListView}" Path="ActualWidth"></Binding>
+                                <Binding RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type local:ShellSectionView}}" Path="ShellContents.Count"></Binding>
+                            </MultiBinding>
+                        </WrapPanel.ItemWidth>
+                    </WrapPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+        <!--<ListView ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellSectionView}},Path=ShellContents}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Label Content="Test"></Label>
+                        <Label Content="{Binding Title}"></Label>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>-->
+    </Grid>
+    <Frame x:Name="SectionFrame" NavigationUIVisibility="Hidden"
+           Grid.Row="1">
             
     </Frame>
 </Grid>

@@ -9,7 +9,6 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Background="White">
     <Grid.Resources>
-        <local:TabWidthConverter x:Key="TabWidthConverter"></local:TabWidthConverter>
     </Grid.Resources>
     <Grid.RowDefinitions>
        <!--<RowDefinition Height="40"></RowDefinition>-->

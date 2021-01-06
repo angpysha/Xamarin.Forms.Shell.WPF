@@ -97,6 +97,7 @@
     <Compile Include="Shell\WpfFlyoutPage.xaml.cs">
       <DependentUpon>WpfFlyoutPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shell\WPFTabbar.cs" />
     <Compile Include="Shell\XFImageSourceToWpfImageSourceConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -172,11 +173,11 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="icon_about.png">
+    <Resource Include="icon_about.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\icon_feed.png">

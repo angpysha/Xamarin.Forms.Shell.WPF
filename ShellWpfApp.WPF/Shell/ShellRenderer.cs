@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using ShellWpfApp.WPF.Shell;
@@ -19,6 +20,7 @@ namespace ShellWpfApp.WPF.Shell
     public class ShellRenderer : VisualPageRenderer<Xamarin.Forms.Shell,WpfFlyoutPage>
     {
         VisualElement _currentView;
+        private IVisualElementRenderer HeaderRenderer { get; set; }
         private IShellController shellController => Element;
 
         public ShellItemRenderer ShellItem { get; set; }
@@ -94,11 +96,13 @@ namespace ShellWpfApp.WPF.Shell
         private void OnElementSet()
         {
             ShowFlaoutButton();
+            SetFlyoutHeader();
             Control.UpdateFlayoutItems();
             Control.ItemContent.Content = ShellItem = new ShellItemRenderer();
             ShellItem.ShellContext = this;
             ShellItem.InitShellData();
             SwitchShellItem(Element.CurrentItem);
+           // SetHeader();
         }
 
         private void SwitchShellItem(ShellItem elementCurrentItem)
@@ -106,6 +110,37 @@ namespace ShellWpfApp.WPF.Shell
             SelectedItem = elementCurrentItem;
             ShellItem.NavigateToShellItem(elementCurrentItem);
             ShellItem.UpdateData();
+        }
+
+        private View FlyoutHeaderView;
+        private void SetFlyoutHeader()
+        {
+            FlyoutHeaderView = Element.FlyoutHeader as View;
+            
+            var headerRenderer = Platform.GetOrCreateRenderer(FlyoutHeaderView);
+            
+            var measet = FlyoutHeaderView.Measure(double.MaxValue, double.MaxValue);
+            var nativeContent = headerRenderer.GetNativeElement();
+            Control.HeaderContent.Content = nativeContent;
+            nativeContent.Loaded -= FlyoutHeaderLoaded;
+            nativeContent.Loaded += FlyoutHeaderLoaded;
+            //Control.HeaderContent.Width = Control.FlyoutView.ActualWidth;
+            //Control.HeaderContent.Height = measet.Request.Height;
+            //nativeContent.Width = Control.HeaderContent.Width;
+            //nativeContent.Height = Control.HeaderContent.Height;
+            //(Element.FlyoutHeader as View)?.LayoutTo(new Rectangle(0, 0, nativeContent.ActualWidth,
+            //    nativeContent.ActualHeight));
+
+            //Control.HeaderContent.Content = nativeContent;
+
+
+        }
+
+        private void FlyoutHeaderLoaded(object sender, RoutedEventArgs e)
+        {
+            var el = sender as FrameworkElement;
+            FlyoutHeaderView.Layout(new Rectangle(0,0,el.ActualWidth,FlyoutHeaderView.HeightRequest > 0 ? FlyoutHeaderView.HeightRequest : el.ActualHeight));
+
         }
     }
 }

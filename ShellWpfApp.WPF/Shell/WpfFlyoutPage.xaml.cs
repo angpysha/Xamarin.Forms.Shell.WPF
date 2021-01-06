@@ -156,5 +156,11 @@ namespace ShellWpfApp.WPF.Shell
             Hambrger_OnClick(this, null);
 
         }
+
+        private void OnBackPressedMouse(object sender, MouseButtonEventArgs e)
+        {
+
+            Xamarin.Forms.Shell.Current.Navigation.PopAsync();
+        }
     }
 }

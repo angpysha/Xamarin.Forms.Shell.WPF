@@ -24,6 +24,7 @@
         <Grid Background="{x:Static wpf:Contants.PrimaryColor}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button Width="35"
@@ -39,9 +40,36 @@
                     x:Name="hambrger"
                     Click="Hambrger_OnClick"
                     ></Button>
+            <Grid Grid.Column="1" x:Name="BackContainer"
+                  Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+
+                </Grid.ColumnDefinitions>
+                <Label Content="←"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       FontSize="35"
+                       FontWeight="Bold"></Label>
+                <Label x:Name="PrevTitle"        
+                       Grid.Column="1"
+                       Content="TestTitle"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       MouseDown="OnBackPressedMouse"></Label>
+                
+                <!--<Button HorizontalAlignment="Stretch"
+                        Grid.ColumnSpan="2"
+                      VerticalAlignment="Stretch"
+                      MouseDown="OnBackPressedMouse"
+                        Background="Aqua"
+                      Content="tes"></Button>-->
+            </Grid>
             <Label x:Name="PageTitleLabel"
                    Content="Title"
-                   Grid.Column="1"
+                   Grid.Column="2"
                    VerticalAlignment="Center"
                    Margin="0,0"
                    FontSize="22"
@@ -74,10 +102,17 @@
         <Grid Background="White"
               Width="250"
               HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+
+            </Grid.RowDefinitions>
+            <ContentControl x:Name="HeaderContent"></ContentControl>
             <ListView Background="Transparent"
+                      Grid.Row="1"
                       ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=FlyoutItems}"
                       SelectionChanged="Selector_OnSelectionChanged"
-                      >
+            >
                 <ListView.ItemTemplate>
                     <DataTemplate >
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
