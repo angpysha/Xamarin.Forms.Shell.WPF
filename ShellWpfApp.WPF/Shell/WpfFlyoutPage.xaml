@@ -24,7 +24,7 @@
         <Grid Background="{x:Static wpf:Contants.PrimaryColor}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"></ColumnDefinition>
-                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button Width="35"
@@ -50,12 +50,14 @@
                 <Label Content="←"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Left"
-                       FontSize="35"
+                       FontSize="45"
+                       Foreground="White"
                        FontWeight="Bold"></Label>
                 <Label x:Name="PrevTitle"        
                        Grid.Column="1"
                        Content="TestTitle"
-                       FontSize="18"
+                       FontSize="16"
+                       VerticalAlignment="Center"
                        FontWeight="Bold"
                        Foreground="White"
                        MouseDown="OnBackPressedMouse"></Label>

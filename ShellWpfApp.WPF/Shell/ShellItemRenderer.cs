@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -252,12 +253,16 @@ namespace ShellWpfApp.WPF.Shell
 
         public void UpdateBottomBar()
         {
+           // ((IList<object>)ShellSections)
+          //  ShellSections = new ObservableCollection<ShellSection>(ShellItem.Items);
+           // WpfTabbar.OnItemsSourceChengedInternal(ShellSections);
             ShellSections.Clear();
             var items = ShellItem.Items;
             foreach (var shellSection in items)
             {
                 ShellSections.Add(shellSection);
             }
+            WpfTabbar.SetActiveTab(ShellSections.IndexOf(ShellSection));
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Xaml.Behaviors.Core;
+using ShellWpfApp.WPF.Annotations;
 using Xamarin.Forms;
 using SelectionChangedEventArgs = System.Windows.Controls.SelectionChangedEventArgs;
 
@@ -22,11 +25,22 @@ namespace ShellWpfApp.WPF.Shell
     /// <summary>
     /// Interaction logic for ShellItemView.xaml
     /// </summary>
-    public partial class ShellItemView 
+    public partial class ShellItemView :  INotifyPropertyChanged
     {
         internal ShellItem ShellItem { get; set; }
         IShellItemController ShellItemController => ShellItem;
-        public ObservableCollection<ShellSection> ShellSections { get; set; }
+
+        private ObservableCollection<ShellSection> _shellSections;
+
+        public ObservableCollection<ShellSection> ShellSections
+        {
+            get => _shellSections;
+            set
+            {
+                _shellSections = value;
+                RaisePropertyChanged(nameof(ShellSections));
+            }
+        }
 
         public virtual float TabWidth { get; }
 
@@ -74,6 +88,20 @@ namespace ShellWpfApp.WPF.Shell
             //var item = e.AddedItems[0];
             //var section = item as ShellSection;
             //ShellItemController.ProposeSection(section);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected void WpfTabbar_OnOnItemClick(object sender, BaseShellItem e)
+        {
+            
+            OnTabClickedAction(e);
         }
     }
 }

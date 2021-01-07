@@ -21,6 +21,7 @@ namespace ShellWpfApp.WPF.Shell
     {
         VisualElement _currentView;
         private IVisualElementRenderer HeaderRenderer { get; set; }
+        private IVisualElementRenderer FooterRenderer { get; set; }
         private IShellController shellController => Element;
 
         public ShellItemRenderer ShellItem { get; set; }
@@ -142,5 +143,11 @@ namespace ShellWpfApp.WPF.Shell
             FlyoutHeaderView.Layout(new Rectangle(0,0,el.ActualWidth,FlyoutHeaderView.HeightRequest > 0 ? FlyoutHeaderView.HeightRequest : el.ActualHeight));
 
         }
+        private View FlyoutFooterView;
+
+        //private void SetFlayoutFooter()
+        //{
+        //    FlyoutFooterView = Element.Flyout
+        //}
     }
 }

@@ -75,7 +75,7 @@ namespace ShellWpfApp.WPF.Shell
             SectionFrame.Navigate(new ShellPageWrapper());
             //await sempahoreSlim.WaitAsync();
          
-            await Task.Delay(500);
+            await Task.Delay(100);
             var shellSectionCurrent = Shell.CurrentItem.CurrentItem;
             NavigateToContent(new NavigationRequestedEventArgs(nextPage, true), shellSectionCurrent);
             //   semaphoreSlim.Wait();
@@ -196,7 +196,7 @@ namespace ShellWpfApp.WPF.Shell
                         break;
                 }
 
-                await Task.Delay(500);
+                await Task.Delay(100);
                 var wrapper = (ShellPageWrapper) (SectionFrame.Content);
                 if (wrapper.Page == null)
                 {
@@ -208,15 +208,7 @@ namespace ShellWpfApp.WPF.Shell
                 PagesNavigationStack = ShellSection.Stack.ToList();
                 UpdateTopTabsVisisbility();
                 OnPageContentChanged();
-                //  UpdateSearchHandler(Shell.GetSearchHandler(Page));
-                //var wrapper = (ShellPageWrapper)(Frame.Content);
-                //if (wrapper.Page == null)
-                //{
-                //    wrapper.Page = Page;
-                //}
-
-                //wrapper.LoadPage();
-                //FormsNavigationStack = ShellSection.Stack.ToList();
+               
             }
         }
 

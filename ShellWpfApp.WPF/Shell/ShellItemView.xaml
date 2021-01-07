@@ -29,6 +29,7 @@
             <ListView ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellItemView}},Path=ShellSections}"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                       SelectionChanged="Selector_OnSelectionChanged"
+                      Visibility="Hidden"
                       >
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate >
@@ -62,6 +63,9 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <local:WPFTabbar ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellItemView}},Path=ShellSections,Mode=TwoWay}"
+                             x:Name="WpfTabbar"
+                             OnItemClick="WpfTabbar_OnOnItemClick"></local:WPFTabbar>
         </Grid>
     </Border>
 </Grid>
