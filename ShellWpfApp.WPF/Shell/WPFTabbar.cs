@@ -84,7 +84,7 @@ namespace ShellWpfApp.WPF.Shell
             UpdateTabbarCollection();
         }
 
-        internal void UpdateTabbarCollection()
+        protected virtual void UpdateTabbarCollection()
         {
             if (ItemsSource.Count() == 0)
             {

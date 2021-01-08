@@ -185,6 +185,18 @@ namespace ShellWpfApp.WPF.Shell
                 OnPageContentChanged();
                 UpdateTopTabsAppearence();
                 UpdateTitle();
+                UpdateToolbarItems();
+            }
+        }
+
+        private void UpdateToolbarItems()
+        {
+            
+            ShellContext.Control.ToolbarItems.Clear();
+            if (Page.ToolbarItems != null && Page.ToolbarItems.Any())
+            foreach (var item in Page.ToolbarItems)
+            {
+                    ShellContext.Control.ToolbarItems.Add(item);
             }
         }
 
@@ -221,12 +233,6 @@ namespace ShellWpfApp.WPF.Shell
             var index = ShellContext.Element.CurrentItem.CurrentItem.Items.IndexOf(CurrentContent);
             TopTabBar.SetActiveTab(index);
         }
-
-        private void OnInsertRequested(NavigationRequestedEventArgs args)
-        {
-
-        }
-
         private void OnPagePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == Page.TitleProperty.PropertyName)
@@ -247,22 +253,30 @@ namespace ShellWpfApp.WPF.Shell
             }
             else if (e.PropertyName == Xamarin.Forms.Shell.TitleViewProperty.PropertyName)
             {
-                UpdateTitle();                
+                UpdateTitle();
             }
 
         }
 
+        private void OnInsertRequested(NavigationRequestedEventArgs args)
+        {
+            var pageIndex = ShellSection.Stack.ToList().IndexOf(args.Page);
+
+            if (pageIndex == ((IEnumerable<object>) SectionFrame.BackStack).Count() - 1)
+            {
+                SectionFrame.Navigate(new ShellPageWrapper());
+            }
+            else
+            {
+              //  ((IEnumerable<object>)SectionFrame.BackStack).
+            }
+        }
+
+       
+
         private async void OnPopRequested(NavigationRequestedEventArgs args)
         {
-
-            var semaphoreSlim = new SemaphoreSlim(0);
-            SectionFrame.LoadCompleted += (sender, eventArgs) =>
-            {
-                semaphoreSlim.Release();
-            };
-
             SectionFrame.GoBack();
-            await semaphoreSlim.WaitAsync();
         }
 
         private void OnPageContentChanged()
@@ -281,13 +295,7 @@ namespace ShellWpfApp.WPF.Shell
 
         private async void OnPushRequested(NavigationRequestedEventArgs args)
         {
-            var semaphoreSlim = new SemaphoreSlim(0);
-            //SectionFrame.LoadCompleted += (sender, eventArgs) =>
-            //{
-            //    semaphoreSlim.Release();
-            //};
             SectionFrame.Navigate(new ShellPageWrapper());
-            //  await semaphoreSlim.WaitAsync();
         }
 
         protected override void OnTopTabPressed(object obj)

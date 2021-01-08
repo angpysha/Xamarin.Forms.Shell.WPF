@@ -27,6 +27,7 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="150"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="250"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Button Width="35"
@@ -151,6 +152,13 @@
                               Grid.Column="2">
 
             </ContentPresenter>
+            <Grid Grid.Column="3">
+                <local:WPFToolbarItems 
+                    x:Name="ToolbarItemsMenu"
+                    ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=ToolbarItems}">
+
+                </local:WPFToolbarItems>
+            </Grid>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -182,7 +190,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
-
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <ContentControl x:Name="HeaderContent"></ContentControl>
                 <ListView Background="Transparent"
@@ -204,6 +212,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <ContentPresenter x:Name="FooterControl"
+                                  Grid.Row="2"></ContentPresenter>
             </Grid>
         </Border>
     </Grid>

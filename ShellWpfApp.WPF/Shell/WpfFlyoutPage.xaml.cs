@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -35,6 +36,43 @@ namespace ShellWpfApp.WPF.Shell
             typeof(WpfFlyoutPage),
             new PropertyMetadata(new System.Windows.Media.SolidColorBrush(Colors.White)));
 
+        public static readonly DependencyProperty FlyoutIsOpenedProperty = DependencyProperty.Register(nameof(FlyoutIsOpened),
+            typeof(bool),
+            typeof(WpfFlyoutPage),
+            new PropertyMetadata(false,OnFlyoutOpenChangedStatic));
+
+        //public static readonly DependencyProperty ToolbarItemsProperty = DependencyProperty.Register(nameof(ToolbarItems),
+        //    typeof(IEnumerable<object>),
+        //    typeof(WpfFlyoutPage),
+        //    new PropertyMetadata(default));
+
+
+
+        private static void OnFlyoutOpenChangedStatic(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
+            var page = d as WpfFlyoutPage;
+            var bNew = ((bool)e.NewValue);
+            var bOld = (bool) e.OldValue;
+
+            if (bNew != bOld)
+            {
+                page?.UpdatePaneVisibility();
+            }
+        }
+
+
+        //public IEnumerable<object> ToolbarItems
+        //{
+        //    get => (IEnumerable<object>) GetValue(ToolbarItemsProperty);
+        //    set => SetValue(ToolbarItemsProperty, value);
+        //}
+        public ObservableCollection<object> ToolbarItems { get; set; }
+        public bool FlyoutIsOpened
+        {
+            get => (bool) GetValue(FlyoutIsOpenedProperty);
+            set => SetValue(FlyoutIsOpenedProperty, value);
+        }
         public WBrush FlyoutBackground
         {
             get => (WBrush) GetValue(FlyoutBackgroundProperty);
@@ -50,6 +88,7 @@ namespace ShellWpfApp.WPF.Shell
             InitializeComponent();
             FlyoutItems = new ObservableCollection<FlyoutItem>();
             ParentWindow.Loaded += Window_LOaded;
+            ToolbarItems = new ObservableCollection<object>();
             //  DataContext = this;
         }
 
@@ -93,6 +132,12 @@ namespace ShellWpfApp.WPF.Shell
 
         private void Hambrger_OnClick(object sender, RoutedEventArgs e)
         {
+
+            FlyoutIsOpened = !FlyoutIsOpened;
+        }
+
+        private void UpdatePaneVisibility()
+        {
             if (FlyoutView.Visibility == Visibility.Collapsed)
             {
                 FlyoutView.Visibility = Visibility.Visible;
@@ -106,8 +151,8 @@ namespace ShellWpfApp.WPF.Shell
                 var sb = new Storyboard();
                 sb.Children.Add(animation);
 
-                Storyboard.SetTarget(sb,FlyoutView);
-                Storyboard.SetTargetProperty(sb,new PropertyPath(Control.MarginProperty));
+                Storyboard.SetTarget(sb, FlyoutView);
+                Storyboard.SetTargetProperty(sb, new PropertyPath(Control.MarginProperty));
 
                 sb.Begin();
 
@@ -126,19 +171,18 @@ namespace ShellWpfApp.WPF.Shell
 
                 Storyboard.SetTarget(sb, FlyoutView);
                 Storyboard.SetTargetProperty(sb, new PropertyPath(Control.MarginProperty));
-                sb.Completed  += (o, args) =>
-                    {
-                        FlyoutView.Visibility = Visibility.Collapsed;
-                        COntainerGrid.Visibility = Visibility.Collapsed;
+                sb.Completed += (o, args) =>
+                {
+                    FlyoutView.Visibility = Visibility.Collapsed;
+                    COntainerGrid.Visibility = Visibility.Collapsed;
 
-                    };
+                };
                 sb.Begin();
                 //sb. += (o, args) =>
                 //{
                 //    FlyoutView.Visibility = Visibility.Collapsed;
                 //};
             }
-
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

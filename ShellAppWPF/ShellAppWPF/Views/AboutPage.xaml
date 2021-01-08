@@ -23,6 +23,10 @@
                    FontAttributes="Italic"></Label>
         </StackLayout>
     </Shell.TitleView>
+    <Page.ToolbarItems>
+        <ToolbarItem Text="Test"
+                     ></ToolbarItem>
+    </Page.ToolbarItems>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

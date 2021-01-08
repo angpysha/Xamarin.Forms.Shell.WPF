@@ -65,19 +65,6 @@ namespace ShellWpfApp.WPF.Shell
             if (items.Any())
             {
                 
-                //Control.HasBackButton = true;
-                //Control.PrimaryTopBarCommands.Add(new FormsAppBarButton()
-                //{
-                //    Width = 30,
-                //    Height = 30,
-                //    Background = new SolidColorBrush(Colors.BlueViolet)
-                //});
-                //Control.SecondaryTopBarCommands.Add(new FormsAppBarButton()
-                //{
-                //    Width = 30,
-                //    Height = 30,
-                //    Background = new SolidColorBrush(Colors.BlueViolet)
-                //});
 
             }
         }
@@ -96,6 +83,9 @@ namespace ShellWpfApp.WPF.Shell
             {
                // int iii = 0;
                SwitchShellItem(Element.CurrentItem);
+            } else if (e.PropertyName == Xamarin.Forms.Shell.FlyoutIsPresentedProperty.PropertyName)
+            {
+
             }
         }
 
@@ -103,6 +93,7 @@ namespace ShellWpfApp.WPF.Shell
         {
             ShowFlaoutButton();
             SetFlyoutHeader();
+            SetFlayoutFooter();
             SetFlyoutBackground();
             Control.UpdateFlayoutItems();
             shellController.AddAppearanceObserver(this,Element);
@@ -150,6 +141,29 @@ namespace ShellWpfApp.WPF.Shell
         }
         private View FlyoutFooterView;
 
+        private void SetFlayoutFooter()
+        {
+            if (Element.FlyoutFooter == null)
+                return;
+            
+            var flyoutFooterView = FlyoutFooterView = Element.FlyoutFooter as View;
+
+            var footerRenderer = Platform.GetOrCreateRenderer(flyoutFooterView);
+
+            var nativeContent = footerRenderer.GetNativeElement();
+
+            Control.FooterControl.Content = nativeContent;
+            nativeContent.Loaded -= FlyoutFooterLoaded;
+            nativeContent.Loaded += FlyoutFooterLoaded;
+
+        }
+
+        private void FlyoutFooterLoaded(object sender, RoutedEventArgs e)
+        {
+            var el = sender as FrameworkElement;
+            FlyoutFooterView.Layout(new Rectangle(0, 0, el.ActualWidth, FlyoutHeaderView.HeightRequest > 0 ? FlyoutHeaderView.HeightRequest : el.ActualHeight));
+        }
+
         //private void SetFlayoutFooter()
         //{
         //    FlyoutFooterView = Element.Flyout
@@ -164,7 +178,6 @@ namespace ShellWpfApp.WPF.Shell
 
         public void OnFlyoutBehaviorChanged(FlyoutBehavior behavior)
         {
-            
 
         }
     }
