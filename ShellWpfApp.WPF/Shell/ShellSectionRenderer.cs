@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Automation.Peers;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
+using Xamarin.Forms.Platform.WPF;
 using WpfGrid = System.Windows.Controls.Grid;
 
 namespace ShellWpfApp.WPF.Shell
@@ -20,7 +21,7 @@ namespace ShellWpfApp.WPF.Shell
 
 
         public Xamarin.Forms.Shell Shell { get; set; }
-        
+
         public ShellRenderer ShellContext { get; set; }
 
         private Page Page;
@@ -33,9 +34,9 @@ namespace ShellWpfApp.WPF.Shell
 
         public void OnAppearanceChanged(ShellAppearance appearance)
         {
-            
+
         }
-        
+
         public async void NavigateToShellSection(ShellSection shellSection)
         {
 
@@ -52,42 +53,17 @@ namespace ShellWpfApp.WPF.Shell
                 ShellSection.PropertyChanged += ShellSectionOnPropertyChanged;
                 ShellSectionController.ItemsCollectionChanged += ShellSectionControllerOnItemsCollectionChanged;
             }
-            //ShellSection = shellSection;
-           
+
             UpdateTopTabs();
 
             var content = shellSection.CurrentItem;
             Page nextPage = (shellSection as IShellSectionController)
                 .PresentedPage ?? ((IShellContentController)content)?.GetOrCreateContent();
-           // SectionFrame.LoadCompleted += OnLoadCompleted;
-           //TODO: Memory leak
-           var sempahoreSlim = new SemaphoreSlim(0);
-            //SectionFrame.LoadCompleted += (sender, args) =>
-            //{
 
-            //    //var shellSectionCurrent = Shell.CurrentItem.CurrentItem;
-            //    //NavigateToContent(new NavigationRequestedEventArgs(nextPage, true), shellSectionCurrent);
-
-            //  //  sempahoreSlim.Release();
-            //    //semaphoreSlim.Release();
-            //    //   int iii = 0;
-            //};
             SectionFrame.Navigate(new ShellPageWrapper());
-            //await sempahoreSlim.WaitAsync();
-         
             await Task.Delay(100);
             var shellSectionCurrent = Shell.CurrentItem.CurrentItem;
             NavigateToContent(new NavigationRequestedEventArgs(nextPage, true), shellSectionCurrent);
-            //   semaphoreSlim.Wait();
-            //NavigateToContent(new NavigationRequestedEventArgs(nextPage, true), shellSection);
-            //NavigateToContent(content);
-
-            //void OnLoadCompleted(object sendr, System.Windows.Navigation.NavigationEventArgs eventArgs)
-            //{
-            //    var shellSectionCurrent = Shell.CurrentItem.CurrentItem;
-            //    NavigateToContent(new NavigationRequestedEventArgs(nextPage, true), shellSectionCurrent);
-            //    SectionFrame.LoadCompleted -= OnLoadCompleted;
-            //}
         }
 
         //private void OnLoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
@@ -97,7 +73,7 @@ namespace ShellWpfApp.WPF.Shell
 
         private void ShellSectionControllerOnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            
+
 
         }
 
@@ -178,7 +154,7 @@ namespace ShellWpfApp.WPF.Shell
                 switch (args.RequestType)
                 {
                     case NavigationRequestType.Insert:
-                    //    OnInsertRequested(args);
+                        OnInsertRequested(args);
                         break;
                     case NavigationRequestType.Pop:
                         OnPopRequested(args);
@@ -189,32 +165,90 @@ namespace ShellWpfApp.WPF.Shell
                         OnPushRequested(args);
                         break;
                     case NavigationRequestType.PopToRoot:
-                      //  OnPopToRootRequested(args);
+                        //  OnPopToRootRequested(args);
                         break;
                     case NavigationRequestType.Remove:
-                     //   OnRemoveRequested(args);
+                        //   OnRemoveRequested(args);
                         break;
                 }
 
                 await Task.Delay(100);
-                var wrapper = (ShellPageWrapper) (SectionFrame.Content);
+                var wrapper = (ShellPageWrapper)(SectionFrame.Content);
                 if (wrapper.Page == null)
                 {
                     wrapper.Page = Page;
                 }
-                
+
                 wrapper.LoadPage();
-                ShellContext.Control.UpdateTitle(Page.Title);
                 PagesNavigationStack = ShellSection.Stack.ToList();
                 UpdateTopTabsVisisbility();
                 OnPageContentChanged();
-               
+                UpdateTopTabsAppearence();
+                UpdateTitle();
             }
+        }
+
+        private void UpdateTitle()
+        {
+            var titleView = Xamarin.Forms.Shell.GetTitleView(Page);
+            if (titleView != null)
+            {
+                var renderer = Platform.GetOrCreateRenderer(titleView);
+                var nativeView = renderer.GetNativeElement();
+                nativeView.Loaded += (sender, args) =>
+                {
+                    var fe = sender as FrameworkElement;
+                    titleView.Layout(new Rectangle(0, 0, fe.ActualWidth, fe.ActualHeight));
+                };
+                ShellContext.Control.UpdateTitleContent(nativeView);
+
+            }
+            else
+            {
+                ShellContext.Control.UpdateTitle(Page.Title);
+            }
+
+        }
+
+        private void UpdateTopTabsAppearence()
+        {
+            var background = Xamarin.Forms.Shell.GetBackgroundColor(ShellContext.Element.CurrentItem);
+            var foreground = Xamarin.Forms.Shell.GetForegroundColor(ShellContext.Element.CurrentItem);
+            var unselectedColor = Xamarin.Forms.Shell.GetTabBarUnselectedColor(ShellContext.Element.CurrentItem);
+            TopTabBar.Background = background.ToBrush();
+            TopTabBar.ActiveColor = foreground.ToBrush();
+            TopTabBar.UnselectedColor = unselectedColor.ToBrush();
+            var index = ShellContext.Element.CurrentItem.CurrentItem.Items.IndexOf(CurrentContent);
+            TopTabBar.SetActiveTab(index);
+        }
+
+        private void OnInsertRequested(NavigationRequestedEventArgs args)
+        {
+
         }
 
         private void OnPagePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            
+            if (e.PropertyName == Page.TitleProperty.PropertyName)
+            {
+                UpdateTitle();
+
+            }
+            else if (e.PropertyName == Xamarin.Forms.Shell.NavBarHasShadowProperty.PropertyName)
+            {
+                //ShellContext.Control.NavBarContainer.Visibility = Xamarin.Forms.Shell.GetTabBarIsVisible(Page)
+                //    ? Visibility.Visible
+                //    : Visibility.Collapsed;
+
+            }
+            else if (e.PropertyName == Xamarin.Forms.Shell.TabBarIsVisibleProperty.PropertyName)
+            {
+
+            }
+            else if (e.PropertyName == Xamarin.Forms.Shell.TitleViewProperty.PropertyName)
+            {
+                UpdateTitle();                
+            }
 
         }
 
@@ -253,14 +287,14 @@ namespace ShellWpfApp.WPF.Shell
             //    semaphoreSlim.Release();
             //};
             SectionFrame.Navigate(new ShellPageWrapper());
-          //  await semaphoreSlim.WaitAsync();
+            //  await semaphoreSlim.WaitAsync();
         }
 
         protected override void OnTopTabPressed(object obj)
         {
             var result = (Shell as IShellController)?.ProposeNavigation(ShellNavigationSource.ShellContentChanged, ShellItem,
                 ShellSection, obj as ShellContent, null, true);
-            if (result!=null && result == true)
+            if (result != null && result == true)
             {
                 ShellSection.SetValueFromRenderer(ShellSection.CurrentItemProperty, obj as ShellContent);
             }
@@ -268,7 +302,7 @@ namespace ShellWpfApp.WPF.Shell
 
         public void NavigateToContent(ShellContent shellContent, bool animated = false)
         {
-            var content = ((IShellContentController) shellContent).GetOrCreateContent();
+            var content = ((IShellContentController)shellContent).GetOrCreateContent();
             if (content != null)
             {
                 Page = content;

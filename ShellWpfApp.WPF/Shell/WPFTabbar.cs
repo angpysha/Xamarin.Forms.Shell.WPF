@@ -34,9 +34,29 @@ namespace ShellWpfApp.WPF.Shell
             typeof(WPFTabbar),
             new PropertyMetadata(default));
 
-        public event EventHandler<BaseShellItem> OnItemClick = delegate { }; 
+        public static readonly DependencyProperty ActiveColorProperty = DependencyProperty.Register(nameof(ActiveColor),
+            typeof(System.Windows.Media.Brush),
+            typeof(WPFTabbar),
+            new PropertyMetadata(new System.Windows.Media.SolidColorBrush(Colors.White)));
 
+        public static readonly DependencyProperty UnselectedColorProperty = DependencyProperty.Register(nameof(UnselectedColor),
+            typeof(System.Windows.Media.Brush),
+            typeof(WPFTabbar),
+            new PropertyMetadata(new System.Windows.Media.SolidColorBrush(Colors.White)));
 
+        public event EventHandler<BaseShellItem> OnItemClick = delegate { };
+
+        public System.Windows.Media.Brush UnselectedColor
+        {
+            get => (System.Windows.Media.Brush)GetValue(UnselectedColorProperty);
+            set => SetValue(UnselectedColorProperty, value);
+        }
+
+        public System.Windows.Media.Brush ActiveColor
+        {
+            get => (System.Windows.Media.Brush)GetValue(ActiveColorProperty);
+            set => SetValue(ActiveColorProperty, value);
+        }
         private static void OnItemsSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var tabbar = d as WPFTabbar;
@@ -97,14 +117,15 @@ namespace ShellWpfApp.WPF.Shell
                   var title = item?.Title;
                   view.Children.Add(new Border()
                   {
-                      Background = new System.Windows.Media.SolidColorBrush(Colors.White)
+                      Background = this.Background
                   });
                     view.Children.Add(new Label()
                     {
                         Content = title,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Bottom,
-                        FontSize = 13
+                        FontSize = 13,
+                        Foreground = UnselectedColor
                     });
 
                     view.MouseDown += ViewOnMouseDown;
@@ -125,6 +146,7 @@ namespace ShellWpfApp.WPF.Shell
                 if (item != null)
                 {
                     item.FontWeight = FontWeight.FromOpenTypeWeight(600);
+                    item.Foreground = ActiveColor;
                 }
             }
         }

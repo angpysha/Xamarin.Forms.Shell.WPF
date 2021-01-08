@@ -6,6 +6,6 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <shell:TabWidthConverter x:Key="TabWidthConverter"></shell:TabWidthConverter>
-
-</Application.Resources>
+        <!--<SolidColorBrush x:Key="CommandBarBackgroundColor" Color="Orange" />-->
+    </Application.Resources>
 </Application>

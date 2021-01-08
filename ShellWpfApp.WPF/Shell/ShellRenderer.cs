@@ -11,14 +11,17 @@ using ShellWpfApp.WPF.Shell;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
 using Xamarin.Forms.Platform.WPF.Controls;
+using Xamarin.Forms.Platform.WPF.Extensions;
+using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
 using SolidColorBrush = System.Windows.Media.SolidColorBrush;
-
+using WBrush = System.Windows.Media.Brush;
 [assembly:ExportRenderer(typeof(Shell),typeof(ShellRenderer))]
 namespace ShellWpfApp.WPF.Shell
 {
-    public class ShellRenderer : VisualPageRenderer<Xamarin.Forms.Shell,WpfFlyoutPage>
+    public class ShellRenderer : VisualPageRenderer<Xamarin.Forms.Shell,WpfFlyoutPage>, IAppearanceObserver, IFlyoutBehaviorObserver
     {
+        public Brush FlyoutBackground { get; set; }
         VisualElement _currentView;
         private IVisualElementRenderer HeaderRenderer { get; set; }
         private IVisualElementRenderer FooterRenderer { get; set; }
@@ -29,6 +32,7 @@ namespace ShellWpfApp.WPF.Shell
 
         public ShellRenderer()
         {
+
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.Shell> e)
@@ -60,13 +64,14 @@ namespace ShellWpfApp.WPF.Shell
             var items = Element.Items.OfType<FlyoutItem>();
             if (items.Any())
             {
-                Control.HasBackButton = true;
-                Control.PrimaryTopBarCommands.Add(new FormsAppBarButton()
-                {
-                    Width = 30,
-                    Height = 30,
-                    Background = new SolidColorBrush(Colors.BlueViolet)
-                });
+                
+                //Control.HasBackButton = true;
+                //Control.PrimaryTopBarCommands.Add(new FormsAppBarButton()
+                //{
+                //    Width = 30,
+                //    Height = 30,
+                //    Background = new SolidColorBrush(Colors.BlueViolet)
+                //});
                 //Control.SecondaryTopBarCommands.Add(new FormsAppBarButton()
                 //{
                 //    Width = 30,
@@ -98,12 +103,20 @@ namespace ShellWpfApp.WPF.Shell
         {
             ShowFlaoutButton();
             SetFlyoutHeader();
+            SetFlyoutBackground();
             Control.UpdateFlayoutItems();
+            shellController.AddAppearanceObserver(this,Element);
+            shellController.AddFlyoutBehaviorObserver(this);
             Control.ItemContent.Content = ShellItem = new ShellItemRenderer();
             ShellItem.ShellContext = this;
             ShellItem.InitShellData();
             SwitchShellItem(Element.CurrentItem);
            // SetHeader();
+        }
+
+        private void SetFlyoutBackground()
+        {
+            Control.FlyoutBackground = Xamarin.Forms.Shell.GetFlyoutBackdrop(Xamarin.Forms.Shell.Current).ToBrush();
         }
 
         private void SwitchShellItem(ShellItem elementCurrentItem)
@@ -125,14 +138,6 @@ namespace ShellWpfApp.WPF.Shell
             Control.HeaderContent.Content = nativeContent;
             nativeContent.Loaded -= FlyoutHeaderLoaded;
             nativeContent.Loaded += FlyoutHeaderLoaded;
-            //Control.HeaderContent.Width = Control.FlyoutView.ActualWidth;
-            //Control.HeaderContent.Height = measet.Request.Height;
-            //nativeContent.Width = Control.HeaderContent.Width;
-            //nativeContent.Height = Control.HeaderContent.Height;
-            //(Element.FlyoutHeader as View)?.LayoutTo(new Rectangle(0, 0, nativeContent.ActualWidth,
-            //    nativeContent.ActualHeight));
-
-            //Control.HeaderContent.Content = nativeContent;
 
 
         }
@@ -149,5 +154,18 @@ namespace ShellWpfApp.WPF.Shell
         //{
         //    FlyoutFooterView = Element.Flyout
         //}
+        public void OnAppearanceChanged(ShellAppearance appearance)
+        {
+            if (appearance != null)
+            {
+                //TODO: Impleemtn
+            }
+        }
+
+        public void OnFlyoutBehaviorChanged(FlyoutBehavior behavior)
+        {
+            
+
+        }
     }
 }

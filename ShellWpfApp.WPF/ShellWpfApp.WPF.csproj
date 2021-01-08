@@ -81,6 +81,9 @@
     </ApplicationDefinition>
     <Compile Include="Contants.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Shell\ShellFlyoutSeparator.xaml.cs">
+      <DependentUpon>ShellFlyoutSeparator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shell\ShellItemRenderer.cs" />
     <Compile Include="Shell\ShellItemView.xaml.cs">
       <DependentUpon>ShellItemView.xaml</DependentUpon>
@@ -111,6 +114,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Shell\ShellFlyoutSeparator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Shell\ShellItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

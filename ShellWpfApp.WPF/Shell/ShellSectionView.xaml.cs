@@ -41,7 +41,12 @@ namespace ShellWpfApp.WPF.Shell
 
         protected virtual void OnTopTabPressed(object obj)
         {
+            
+        }
 
+        private void TopTabBar_OnItemClick(object sender, BaseShellItem e)
+        {
+            OnTopTabPressed(e);
         }
     }
 }

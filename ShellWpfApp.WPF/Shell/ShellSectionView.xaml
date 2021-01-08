@@ -12,7 +12,13 @@
         <RowDefinition Height="*"></RowDefinition>
     </Grid.RowDefinitions>
     <Grid Background="White" x:Name="TopTabContainer">
-        <ListView x:Name="TopTab" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellSectionView}},Path=ShellContents}">
+        <local:WPFTabbar 
+            x:Name="TopTabBar"
+            OnItemClick="TopTabBar_OnItemClick"
+            ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellSectionView}},Path=ShellContents}"/>
+        <ListView x:Name="TopTab" 
+                  Visibility="Collapsed"
+                  ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellSectionView}},Path=ShellContents}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

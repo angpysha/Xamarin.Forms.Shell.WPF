@@ -21,17 +21,19 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid Background="{x:Static wpf:Contants.PrimaryColor}">
+        <Grid Background="{x:Static wpf:Contants.PrimaryColor}"
+              x:Name="NavBarContainer">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"></ColumnDefinition>
-                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
+
             <Button Width="35"
                     Height="35"
                     HorizontalAlignment="Left"
                     Margin="15,0"
-                    Content="="
+                    BorderThickness="0"
                     FontSize="25"
                     FontStretch="Medium"
                     FontWeight="Bold"
@@ -39,7 +41,60 @@
                     Foreground="White"
                     x:Name="hambrger"
                     Click="Hambrger_OnClick"
-                    ></Button>
+                    >
+                <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform">
+                    <Canvas Name="Capa_1" Canvas.Left="0" Canvas.Top="0" Width="512" Height="512">
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="0" Y="0"/>
+                        </Canvas.RenderTransform>
+                        <Canvas.Resources/>
+                        <!--Unknown tag: metadata-->
+                        <!--Unknown tag: sodipodi:namedview-->
+                        <Canvas Name="g69">
+                            <Canvas Name="g67">
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path65" Fill="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=Foreground}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M492 236H20c-11.046 0-20 8.954-20 20c0 11.046 8.954 20 20 20h472c11.046 0 20-8.954 20-20S503.046 236 492 236z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                </Path>
+                            </Canvas>
+                        </Canvas>
+                        <Canvas Name="g75">
+                            <Canvas Name="g73">
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path71" Fill="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=Foreground}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M492 76H20C8.954 76 0 84.954 0 96s8.954 20 20 20h472c11.046 0 20-8.954 20-20S503.046 76 492 76z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                </Path>
+                            </Canvas>
+                        </Canvas>
+                        <Canvas Name="g81">
+                            <Canvas Name="g79">
+                                <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path77" Fill="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=Foreground}">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M492 396H20c-11.046 0-20 8.954-20 20c0 11.046 8.954 20 20 20h472c11.046 0 20-8.954 20-20    C512 404.954 503.046 396 492 396z" FillRule="NonZero"/>
+                                    </Path.Data>
+                                </Path>
+                            </Canvas>
+                        </Canvas>
+                        <Canvas Name="g83"/>
+                        <Canvas Name="g85"/>
+                        <Canvas Name="g87"/>
+                        <Canvas Name="g89"/>
+                        <Canvas Name="g91"/>
+                        <Canvas Name="g93"/>
+                        <Canvas Name="g95"/>
+                        <Canvas Name="g97"/>
+                        <Canvas Name="g99"/>
+                        <Canvas Name="g101"/>
+                        <Canvas Name="g103"/>
+                        <Canvas Name="g105"/>
+                        <Canvas Name="g107"/>
+                        <Canvas Name="g109"/>
+                        <Canvas Name="g111"/>
+                    </Canvas>
+                </Viewbox>
+            </Button>
             <Grid Grid.Column="1" x:Name="BackContainer"
                   Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
@@ -47,27 +102,42 @@
                     <ColumnDefinition Width="3*"></ColumnDefinition>
 
                 </Grid.ColumnDefinitions>
-                <Label Content="←"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Left"
-                       FontSize="45"
-                       Foreground="White"
-                       FontWeight="Bold"></Label>
-                <Label x:Name="PrevTitle"        
-                       Grid.Column="1"
-                       Content="TestTitle"
-                       FontSize="16"
-                       VerticalAlignment="Center"
-                       FontWeight="Bold"
-                       Foreground="White"
-                       MouseDown="OnBackPressedMouse"></Label>
-                
-                <!--<Button HorizontalAlignment="Stretch"
-                        Grid.ColumnSpan="2"
-                      VerticalAlignment="Stretch"
-                      MouseDown="OnBackPressedMouse"
-                        Background="Aqua"
-                      Content="tes"></Button>-->
+                <Button Grid.ColumnSpan="2"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        MouseDown="OnBackPressedMouse"
+                        Click="OnPrevButtonClick">
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox  Stretch="Uniform" Width="25"
+                              Height="25">
+
+                            <Canvas Name="Layer_1" Canvas.Left="0" Canvas.Top="0" Width="492" Height="492">
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </Canvas.RenderTransform>
+                                <Canvas.Resources/>
+                                <!--Unknown tag: metadata-->
+                                <!--Unknown tag: sodipodi:namedview-->
+                                <Canvas Name="g57">
+                                    <Canvas Name="g55">
+                                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path53" Fill="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=Foreground}">
+                                            <Path.Data>
+                                                <PathGeometry Figures="M198.608 246.104L382.664 62.04c5.068-5.056 7.856-11.816 7.856-19.024c0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12    C361.476 2.792 354.712 0 347.504 0s-13.964 2.792-19.028 7.864L109.328 227.008c-5.084 5.08-7.868 11.868-7.848 19.084    c-0.02 7.248 2.76 14.028 7.848 19.112l218.944 218.932c5.064 5.072 11.82 7.864 19.032 7.864c7.208 0 13.964-2.792 19.032-7.864    l16.124-16.12c10.492-10.492 10.492-27.572 0-38.06L198.608 246.104z" FillRule="NonZero"/>
+                                            </Path.Data>
+                                        </Path>
+                                    </Canvas>
+                                </Canvas>
+                            </Canvas>
+                        </Viewbox>
+                        <Label x:Name="PrevTitle"
+                               Content="TestTitle"
+                               FontSize="18"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="White"></Label>
+                    </StackPanel>
+                </Button>
+              
             </Grid>
             <Label x:Name="PageTitleLabel"
                    Content="Title"
@@ -77,13 +147,17 @@
                    FontSize="22"
                    FontWeight="Bold"
                    Foreground="White"></Label>
+            <ContentPresenter x:Name="CustomTitleContent"
+                              Grid.Column="2">
+
+            </ContentPresenter>
         </Grid>
-       
-       <Grid Grid.Row="1">
-           <ContentControl x:Name="ContentControl">
-         
-           </ContentControl>
-       </Grid>
+
+        <Grid Grid.Row="1">
+            <ContentControl x:Name="ContentControl">
+
+            </ContentControl>
+        </Grid>
         <Grid Grid.Row="1"
               Background="#22000000"
               x:Name="COntainerGrid"
@@ -101,44 +175,36 @@
                 Grid.Row="1"
                 x:Name="FlyoutView"
         >
-        <Grid Background="White"
+            <Grid Background="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=FlyoutBackground}"
               Width="250"
-              HorizontalAlignment="Left">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+              HorizontalAlignment="Left"
+              x:Name="FlyoutContainer">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
 
-            </Grid.RowDefinitions>
-            <ContentControl x:Name="HeaderContent"></ContentControl>
-            <ListView Background="Transparent"
+                </Grid.RowDefinitions>
+                <ContentControl x:Name="HeaderContent"></ContentControl>
+                <ListView Background="Transparent"
                       Grid.Row="1"
                       ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=FlyoutItems}"
                       SelectionChanged="Selector_OnSelectionChanged"
             >
-                <ListView.ItemTemplate>
-                    <DataTemplate >
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-  
-                            <!--<visualBasic:Interaction.Triggers>
-                                            <visualbasic:
-                                </visualBasic:Interaction.Triggers>-->
-                            <!--<Grid Width="30"
-                                     Height="30"
-                                     Background="Blue"></Grid>-->
-                            <!--{Binding Icon,Converter={StaticResource XfImageSourceToWpfImageSourceConverter}}-->
-                            <!--/ShellWpfApp.WPF;component/Resources/icon_about.png-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate >
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <Image Source="{Binding Icon,Converter={StaticResource XfImageSourceToWpfImageSourceConverter}}"
-                                   Width="30"
-                                   Height="30"></Image>
-                            <Label Content="{Binding Title}"
+                                       Width="30"
+                                       Height="30"></Image>
+                                <Label Content="{Binding Title}"
                                    HorizontalAlignment="Center"
                                    FontSize="14"
                                    Foreground="Black"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Border>
     </Grid>
 </controls:FormsContentPage>

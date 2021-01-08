@@ -12,6 +12,7 @@ using System.Windows.Media;
 using ShellWpfApp.WPF.Annotations;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
+using Xamarin.Forms.Platform.WPF;
 using WpfGrid = System.Windows.Controls.Grid;
 
 namespace ShellWpfApp.WPF.Shell
@@ -262,6 +263,14 @@ namespace ShellWpfApp.WPF.Shell
             {
                 ShellSections.Add(shellSection);
             }
+
+            //  WpfTabbar.ActiveColor = (ShellController as Xamarin.Forms.Shell)
+            var tabBarColor = Xamarin.Forms.Shell.GetTabBarBackgroundColor(ShellItem);
+            var activeColor = Xamarin.Forms.Shell.GetTabBarForegroundColor(ShellItem);
+            var unselectedColor = Xamarin.Forms.Shell.GetTabBarUnselectedColor(ShellItem);
+            WpfTabbar.Background = tabBarColor.ToBrush();
+            WpfTabbar.UnselectedColor = unselectedColor.ToBrush();
+            WpfTabbar.ActiveColor = activeColor.ToBrush();
             WpfTabbar.SetActiveTab(ShellSections.IndexOf(ShellSection));
         }
     }

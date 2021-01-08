@@ -14,7 +14,15 @@
             <Color x:Key="Accent">#96d1ff</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
-
+    <Shell.TitleView>
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     BackgroundColor="Red">
+            <Label Text="{Binding Title}"
+                   FontSize="24"
+                   FontAttributes="Italic"></Label>
+        </StackLayout>
+    </Shell.TitleView>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

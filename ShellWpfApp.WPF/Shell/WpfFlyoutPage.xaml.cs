@@ -15,17 +15,31 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ShellAppWPF.Helpers;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.WPF;
 using Xamarin.Forms.Platform.WPF.Controls;
+using Grid = System.Windows.Controls.Grid;
 using SelectionChangedEventArgs = System.Windows.Controls.SelectionChangedEventArgs;
+using WBrush = System.Windows.Media.Brush;
 
 namespace ShellWpfApp.WPF.Shell
 {
     /// <summary>
     /// Interaction logic for WpfFlyoutPage.xaml
     /// </summary>
-    public partial class WpfFlyoutPage
+    public partial class WpfFlyoutPage : FormsContentPage
     {
+        public static readonly DependencyProperty FlyoutBackgroundProperty = DependencyProperty.Register(nameof(FlyoutBackground),
+            typeof(WBrush),
+            typeof(WpfFlyoutPage),
+            new PropertyMetadata(new System.Windows.Media.SolidColorBrush(Colors.White)));
+
+        public WBrush FlyoutBackground
+        {
+            get => (WBrush) GetValue(FlyoutBackgroundProperty);
+            set => SetValue(FlyoutBackgroundProperty, value);
+        }
         public ContentControl ItemContent => ContentControl;
         public ObservableCollection<FlyoutItem> FlyoutItems { get; set; }
 
@@ -35,8 +49,15 @@ namespace ShellWpfApp.WPF.Shell
         {
             InitializeComponent();
             FlyoutItems = new ObservableCollection<FlyoutItem>();
-          //  DataContext = this;
+            ParentWindow.Loaded += Window_LOaded;
+            //  DataContext = this;
         }
+
+        private void Window_LOaded(object sender, RoutedEventArgs e)
+        {
+            var Parentt = ParentWindow;
+        }
+
 
         public void UpdateFlayoutItems()
         {
@@ -50,29 +71,22 @@ namespace ShellWpfApp.WPF.Shell
                     
                 }
 
-                //var varInfo = (ParentWindow).GetType().BaseType.BaseType
-                //    .GetField("hamburgerButton", BindingFlags.Instance | BindingFlags.NonPublic);
-                //var hunInfo = varInfo.GetValue(ParentWindow) as System.Windows.Controls.Button;
-                //var humBut = Template.FindName("PART_Hamburger", this) as System.Windows.Controls.Button;
-
-                //topAppBar
                 var appbarInfo = (ParentWindow).GetType().BaseType.BaseType
                     .GetField("topAppBar", BindingFlags.Instance | BindingFlags.NonPublic);
                 var appbar = appbarInfo.GetValue(ParentWindow) as FormsAppBar;
                 //appbar.Background = new System.Windows.Media.SolidColorBrush(Colors.Red);
                 appbar.Visibility = Visibility.Collapsed;
                 //currentTitle
-                var currTileInfo = ParentWindow.GetType().BaseType.BaseType.GetProperty("CurrentTitle");
-               // currTileInfo.SetValue(ParentWindow, "Test", null);
-               //ParentWindow.SetValue(FormsWindow.CurrentTitleProperty,"Test");
-                //  Title = "test";
-                //hunInfo.Visibility = Visibility.Visible;
-                //hunInfo.Height = 30;
-                //hunInfo.Width = 30;
-                //hunInfo.Background = new System.Windows.Media.SolidColorBrush(Colors.Black);
-              //  ParentWindow?.SynchronizeAppBar();
+                //var currTileInfo = ParentWindow.GetType().BaseType.BaseType.GetProperty("CurrentTitle");
+                //var borderInfo = (ParentWindow).GetType().BaseType.BaseType.GetField("BorderWindow", BindingFlags.Instance | BindingFlags.NonPublic);
+                var tempalte = ParentWindow.Template;
+                var border = tempalte.FindName("BorderWindow",ParentWindow) as Border;
+                //var itemmm = ParentWindow.InternalChildren;
+                border.BorderBrush = ResourcesHelper.PrimaryColor.ToBrush();
+                var commandBar = tempalte.FindName("PART_CommandsBar", ParentWindow) as Grid;
+                commandBar.Background = ResourcesHelper.PrimaryColor.ToBrush();
 
-                // ParentWindow?.SynchronizeToolbarCommands();
+
 
             }
         }
@@ -142,7 +156,17 @@ namespace ShellWpfApp.WPF.Shell
 
         public void UpdateTitle(string title)
         {
+         //   if (Xamarin.Forms.Shell.GetTitleView(Page))
             PageTitleLabel.Content = title;
+            CustomTitleContent.Visibility = Visibility.Collapsed;
+            PageTitleLabel.Visibility = Visibility.Visible;
+        }
+
+        public void UpdateTitleContent(FrameworkElement element)
+        {
+            CustomTitleContent.Visibility = Visibility.Visible;
+            PageTitleLabel.Visibility = Visibility.Collapsed;
+            CustomTitleContent.Content = element;
         }
 
         private void COntainerGrid_OnTouchDown(object sender, TouchEventArgs e)
@@ -161,6 +185,18 @@ namespace ShellWpfApp.WPF.Shell
         {
 
             Xamarin.Forms.Shell.Current.Navigation.PopAsync();
+        }
+
+        private void OnPrevButtonClick(object sender, RoutedEventArgs e)
+        {
+            Xamarin.Forms.Shell.Current.Navigation.PopAsync();
+
+
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
         }
     }
 }
