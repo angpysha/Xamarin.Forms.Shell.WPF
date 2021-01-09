@@ -3,8 +3,10 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:ShellAppWPF.Views"
        Title="ShellAppWPF"
-       x:Class="ShellAppWPF.AppShell">
-
+       x:Class="ShellAppWPF.AppShell"
+>
+    <!--FlyoutBackgroundImage="yoda.jpeg"
+    FlyoutBackgroundImageAspect="AspectFill"-->
     <!--
         The overall app visual hierarchy is defined here, along with navigation.
     
@@ -85,11 +87,11 @@
                      HorizontalOptions="FillAndExpand"
                      BackgroundColor="DeepSkyBlue"></StackLayout>
     </Shell.FlyoutHeader>
-    <!--<Shell.FlyoutFooter>
+    <Shell.FlyoutFooter>
         <StackLayout HeightRequest="50"
                      HorizontalOptions="FillAndExpand"
-                     BackgroundColor="DeepSkyBlue"></StackLayout>
-    </Shell.FlyoutFooter>-->
+                     BackgroundColor="DarkSlateGray"></StackLayout>
+    </Shell.FlyoutFooter>
     <FlyoutItem Title="About" Icon="icon_about.png">
         <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
     </FlyoutItem>

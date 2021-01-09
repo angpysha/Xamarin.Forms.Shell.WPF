@@ -10,6 +10,7 @@
     <RootNamespace>ShellWpfApp.WPF</RootNamespace>
     <AssemblyName>ShellWpfApp.WPF</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>8.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -79,30 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Contants.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Shell\ShellFlyoutSeparator.xaml.cs">
-      <DependentUpon>ShellFlyoutSeparator.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Shell\ShellItemRenderer.cs" />
-    <Compile Include="Shell\ShellItemView.xaml.cs">
-      <DependentUpon>ShellItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Shell\ShellPageWrapper.xaml.cs">
-      <DependentUpon>ShellPageWrapper.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Shell\ShellRenderer.cs" />
-    <Compile Include="Shell\ShellSectionRenderer.cs" />
-    <Compile Include="Shell\ShellSectionView.xaml.cs">
-      <DependentUpon>ShellSectionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Shell\TabWidthConverter.cs" />
-    <Compile Include="Shell\WpfFlyoutPage.xaml.cs">
-      <DependentUpon>WpfFlyoutPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Shell\WPFTabbar.cs" />
-    <Compile Include="Shell\WPFToolbarItems.cs" />
-    <Compile Include="Shell\XFImageSourceToWpfImageSourceConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -115,26 +93,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Shell\ShellFlyoutSeparator.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\ShellItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\ShellPageWrapper.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\ShellSectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Shell\WpfFlyoutPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -169,6 +127,10 @@
       <Project>{34143536-cbf6-405f-9134-e931298b6def}</Project>
       <Name>ShellAppWPF</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xamarin.Forms.Shell.WPF\Xamarin.Forms.Shell.WPF.csproj">
+      <Project>{71d726bf-5b80-4dea-8c39-eace40a915b7}</Project>
+      <Name>Xamarin.Forms.Shell.WPF</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\icon_about.png">
@@ -181,11 +143,19 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="icon_about.png">
+    <Content Include="xamarin_logo.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
+    <Content Include="yoda.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icon_about.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\icon_feed.png">
@@ -196,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Shell\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -7,13 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellAppWPF.Android", "Shel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellAppWPF.iOS", "ShellAppWPF\ShellAppWPF.iOS\ShellAppWPF.iOS.csproj", "{353D0128-F671-489B-8B46-CEE6F4F5D57A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellAppWPF", "ShellAppWPF\ShellAppWPF\ShellAppWPF.csproj", "{34143536-CBF6-405F-9134-E931298B6DEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellAppWPF", "ShellAppWPF\ShellAppWPF\ShellAppWPF.csproj", "{34143536-CBF6-405F-9134-E931298B6DEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellAppWPF.UWP", "ShellAppWPF.UWP\ShellAppWPF.UWP.csproj", "{F46E4F77-E1C3-460C-BCF6-5BF08DD9D8A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellWpfApp.WPF", "ShellWpfApp.WPF\ShellWpfApp.WPF.csproj", "{A93479DC-A98E-4AD9-9345-1CD6897CA32D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellAppWpf.WpfCore3", "ShellAppWpf.WpfCore3\ShellAppWpf.WpfCore3.csproj", "{0B0098BE-88AE-4912-BCCE-21756A8592CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellAppWpf.WpfCore3", "ShellAppWpf.WpfCore3\ShellAppWpf.WpfCore3.csproj", "{0B0098BE-88AE-4912-BCCE-21756A8592CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Forms.Shell.WPF", "Xamarin.Forms.Shell.WPF\Xamarin.Forms.Shell.WPF.csproj", "{71D726BF-5B80-4DEA-8C39-EACE40A915B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -223,6 +225,34 @@ Global
 		{0B0098BE-88AE-4912-BCCE-21756A8592CF}.Release|x64.Build.0 = Release|Any CPU
 		{0B0098BE-88AE-4912-BCCE-21756A8592CF}.Release|x86.ActiveCfg = Release|Any CPU
 		{0B0098BE-88AE-4912-BCCE-21756A8592CF}.Release|x86.Build.0 = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|ARM.Build.0 = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|x64.Build.0 = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Debug|x86.Build.0 = Debug|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|ARM.ActiveCfg = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|ARM.Build.0 = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|ARM64.Build.0 = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|iPhone.Build.0 = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|x64.ActiveCfg = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|x64.Build.0 = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|x86.ActiveCfg = Release|Any CPU
+		{71D726BF-5B80-4DEA-8C39-EACE40A915B7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

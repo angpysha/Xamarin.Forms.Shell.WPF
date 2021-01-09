@@ -1,0 +1,91 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <!--<TargetFramework>netcoreapp3.1</TargetFramework>-->
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netcoreapp3.1;net472;</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">net472;</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="ShellFlyoutSeparator.xaml" />
+    <EmbeddedResource Remove="ShellItemView.xaml" />
+    <EmbeddedResource Remove="ShellPageWrapper.xaml" />
+    <EmbeddedResource Remove="ShellSectionView.xaml" />
+    <EmbeddedResource Remove="WpfFlyoutPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
+    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="5.0.0.1874" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShellAppWPF\ShellAppWPF\ShellAppWPF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="TabWidthConverter.cs">
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Compile>
+    <Compile Update="WPFTabbar.cs">
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ShellPageWrapper.xaml">
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ShellFlyoutSeparator.xaml">
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Update="ShellItemView.xaml">
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Compile Update="ShellFlyoutSeparator.xaml.cs">
+      <DependentUpon>ShellFlyoutSeparator.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ShellItemView.xaml.cs">
+      <DependentUpon>ShellItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ShellPageWrapper.xaml.cs">
+      <DependentUpon>ShellPageWrapper.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ShellSectionView.xaml.cs">
+      <DependentUpon>ShellSectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="WpfFlyoutPage.xaml.cs">
+      <DependentUpon>WpfFlyoutPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ShellFlyoutSeparator.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ShellItemView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ShellPageWrapper.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ShellSectionView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="WpfFlyoutPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>-->
+
+</Project>

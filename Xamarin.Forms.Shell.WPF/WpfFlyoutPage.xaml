@@ -40,7 +40,7 @@
                     FontWeight="Bold"
                     Background="Transparent"
                     Foreground="White"
-                    x:Name="hambrger"
+                    x:Name="hamburger"
                     Click="Hambrger_OnClick"
                     >
                 <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform">
@@ -161,7 +161,7 @@
             </Grid>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="ContentControlContainer">
             <ContentControl x:Name="ContentControl">
 
             </ContentControl>

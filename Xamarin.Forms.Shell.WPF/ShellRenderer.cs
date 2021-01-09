@@ -15,6 +15,7 @@ using Xamarin.Forms.Platform.WPF.Extensions;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
 using SolidColorBrush = System.Windows.Media.SolidColorBrush;
+using Stretch = System.Windows.Media.Stretch;
 using WBrush = System.Windows.Media.Brush;
 [assembly:ExportRenderer(typeof(Shell),typeof(ShellRenderer))]
 namespace ShellWpfApp.WPF.Shell
@@ -105,16 +106,45 @@ namespace ShellWpfApp.WPF.Shell
            // SetHeader();
         }
 
-        private void SetFlyoutBackground()
+        private async void SetFlyoutBackground()
         {
-            Control.FlyoutBackground = Xamarin.Forms.Shell.GetFlyoutBackdrop(Xamarin.Forms.Shell.Current).ToBrush();
+            if (Element.FlyoutBackgroundImage != null)
+            {
+                var source = await Element.FlyoutBackgroundImage.ToWindowsImageSourceAsync();
+                var imageBrush = new ImageBrush(source);
+                imageBrush.Stretch = ToWStretch(Element.FlyoutBackgroundImageAspect);
+                Control.FlyoutBackground = imageBrush;
+            }
+            else
+            {
+                Control.FlyoutBackground = Element.Background != null?
+                    Element.FlyoutBackground.ToBrush():
+                    Element.FlyoutBackgroundColor.ToBrush();
+            }
+        }
+
+        private Stretch ToWStretch(Aspect aspect)
+        {
+            return aspect switch
+            {
+                Aspect.AspectFit => Stretch.Uniform,
+                Aspect.AspectFill => Stretch.UniformToFill,
+                Aspect.Fill => Stretch.Fill
+            };
         }
 
         private void SwitchShellItem(ShellItem elementCurrentItem)
         {
             SelectedItem = elementCurrentItem;
+            UpdateHamburgerIconVisibility();
             ShellItem.NavigateToShellItem(elementCurrentItem);
             ShellItem.UpdateData();
+        }
+
+        private void UpdateHamburgerIconVisibility()
+        {
+           // Control.hamburger.Visibility
+
         }
 
         private View FlyoutHeaderView;
@@ -161,7 +191,7 @@ namespace ShellWpfApp.WPF.Shell
         private void FlyoutFooterLoaded(object sender, RoutedEventArgs e)
         {
             var el = sender as FrameworkElement;
-            FlyoutFooterView.Layout(new Rectangle(0, 0, el.ActualWidth, FlyoutHeaderView.HeightRequest > 0 ? FlyoutHeaderView.HeightRequest : el.ActualHeight));
+            FlyoutFooterView.Layout(new Rectangle(0, 0, el.ActualWidth, FlyoutFooterView.HeightRequest > 0 ? FlyoutFooterView.HeightRequest : el.ActualHeight));
         }
 
         //private void SetFlayoutFooter()

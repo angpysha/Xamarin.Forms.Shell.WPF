@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ShellWpfApp.WPF"
              xmlns:shell="clr-namespace:ShellWpfApp.WPF.Shell"
+             xmlns:shell1="clr-namespace:ShellWpfApp.WPF.Shell;assembly=Xamarin.Forms.Shell.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <shell:TabWidthConverter x:Key="TabWidthConverter"></shell:TabWidthConverter>
+        <shell1:TabWidthConverter x:Key="TabWidthConverter"></shell1:TabWidthConverter>
         <!--<SolidColorBrush x:Key="CommandBarBackgroundColor" Color="Orange" />-->
     </Application.Resources>
 </Application>

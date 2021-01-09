@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
+//using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace ShellWpfApp.WPF.Shell
         public ShellRenderer ShellContext { get; set; }
 
         private Page Page;
-
+        
         public ShellItem ShellItem { get; set; }
 
         public List<Page> PagesNavigationStack;
@@ -186,18 +186,19 @@ namespace ShellWpfApp.WPF.Shell
                 UpdateTopTabsAppearence();
                 UpdateTitle();
                 UpdateToolbarItems();
+                UpdateNavBarVisibility();
             }
         }
 
         private void UpdateToolbarItems()
         {
-            
+
             ShellContext.Control.ToolbarItems.Clear();
             if (Page.ToolbarItems != null && Page.ToolbarItems.Any())
-            foreach (var item in Page.ToolbarItems)
-            {
+                foreach (var item in Page.ToolbarItems)
+                {
                     ShellContext.Control.ToolbarItems.Add(item);
-            }
+                }
         }
 
         private void UpdateTitle()
@@ -255,6 +256,31 @@ namespace ShellWpfApp.WPF.Shell
             {
                 UpdateTitle();
             }
+            else if (e.PropertyName == Xamarin.Forms.Shell.NavBarIsVisibleProperty.PropertyName)
+            {
+                UpdateNavBarVisibility();
+            }
+
+        }
+
+        private void UpdateNavBarVisibility()
+        {
+            var navBarVisible = Xamarin.Forms.Shell.GetNavBarIsVisible(Page);
+            ShellContext.Control.NavBarContainer.Visibility = (navBarVisible)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+            if (navBarVisible)
+            {
+                WpfGrid.SetRow(ShellContext.Control.ContentControlContainer, 1);
+                WpfGrid.SetRowSpan(ShellContext.Control.ContentControlContainer, 1);
+
+            }
+            else
+            {
+                WpfGrid.SetRow(ShellContext.Control.ContentControlContainer, 0);
+                WpfGrid.SetRowSpan(ShellContext.Control.ContentControlContainer, 2);
+
+            }
 
         }
 
@@ -262,17 +288,17 @@ namespace ShellWpfApp.WPF.Shell
         {
             var pageIndex = ShellSection.Stack.ToList().IndexOf(args.Page);
 
-            if (pageIndex == ((IEnumerable<object>) SectionFrame.BackStack).Count() - 1)
+            if (pageIndex == ((IEnumerable<object>)SectionFrame.BackStack).Count() - 1)
             {
                 SectionFrame.Navigate(new ShellPageWrapper());
             }
             else
             {
-              //  ((IEnumerable<object>)SectionFrame.BackStack).
+                //  ((IEnumerable<object>)SectionFrame.BackStack).
             }
         }
 
-       
+
 
         private async void OnPopRequested(NavigationRequestedEventArgs args)
         {

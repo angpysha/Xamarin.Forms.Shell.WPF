@@ -79,14 +79,14 @@ namespace ShellWpfApp.WPF.Shell
             set => SetValue(FlyoutBackgroundProperty, value);
         }
         public ContentControl ItemContent => ContentControl;
-        public ObservableCollection<FlyoutItem> FlyoutItems { get; set; }
+        public ObservableCollection<BaseShellItem> FlyoutItems { get; set; }
 
         public WeakReference<Xamarin.Forms.Shell> Shell { get; set; }
 
         public WpfFlyoutPage()
         {
             InitializeComponent();
-            FlyoutItems = new ObservableCollection<FlyoutItem>();
+            FlyoutItems = new ObservableCollection<BaseShellItem>();
             ParentWindow.Loaded += Window_LOaded;
             ToolbarItems = new ObservableCollection<object>();
             //  DataContext = this;
@@ -102,7 +102,8 @@ namespace ShellWpfApp.WPF.Shell
         {
             if (Shell.TryGetTarget(out var shell))
             {
-                var items = shell.Items.OfType<FlyoutItem>().ToList();
+           //     var items = shell.Items.OfType<FlyoutItem>().ToList();
+           var items = shell.Items.ToList();
                 FlyoutItems.Clear();
                 foreach (var flyoutItem in items)
                 {

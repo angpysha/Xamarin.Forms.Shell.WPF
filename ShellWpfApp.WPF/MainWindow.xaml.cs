@@ -23,6 +23,7 @@ namespace ShellWpfApp.WPF
         public MainWindow()
         {
             InitializeComponent();
+            Xamarin.Forms.ShellWPF.Xamarin.Init();
             Xamarin.Forms.Forms.Init();
             LoadApplication(new ShellAppWPF.App());
         }
