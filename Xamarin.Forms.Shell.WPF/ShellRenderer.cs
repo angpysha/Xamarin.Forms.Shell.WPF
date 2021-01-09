@@ -33,7 +33,17 @@ namespace ShellWpfApp.WPF.Shell
 
         public ShellRenderer()
         {
+            VerifyExperimentalFlagExit();
+        }
 
+        private void VerifyExperimentalFlagExit()
+        {
+            var flags = Xamarin.Forms.Forms.Flags;
+            var contains = flags.Contains("Shell_WPF_Experimental");
+            if (contains == false)
+            {
+                throw new InvalidOperationException("Shell for WPF is experimental. Please, add Shell_UWP_Experimental flag");
+            }
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.Shell> e)

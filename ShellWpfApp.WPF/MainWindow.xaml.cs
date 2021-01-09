@@ -21,8 +21,9 @@ namespace ShellWpfApp.WPF
     public partial class MainWindow 
     {
         public MainWindow()
-        {
+        { 
             InitializeComponent();
+            Xamarin.Forms.Forms.SetFlags(new []{ "Shell_WPF_Experimental" });
             Xamarin.Forms.ShellWPF.Xamarin.Init();
             Xamarin.Forms.Forms.Init();
             LoadApplication(new ShellAppWPF.App());

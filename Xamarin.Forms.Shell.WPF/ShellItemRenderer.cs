@@ -117,7 +117,7 @@ namespace ShellWpfApp.WPF.Shell
 
         public ShellItemRenderer()
         {
-          //  Background = new System.Windows.Media.SolidColorBrush(Colors.Red);
+            //  Background = new System.Windows.Media.SolidColorBrush(Colors.Red);
           SectionControl.Content = ShellSectionRenderer = new ShellSectionRenderer();
           
         //  ShellSectionRenderer.Shell = ShellContext?.Element;

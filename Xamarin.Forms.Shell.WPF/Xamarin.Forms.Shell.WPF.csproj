@@ -8,6 +8,28 @@
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>8.0</LangVersion>
+    <Authors>Andrii Petrovskyi</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <PackageId>Xamarin.Forms.Shell.WPF</PackageId>
+    <Version>5.0.0.1874-pre1</Version>
+    <PackageVersion>5.0.0.1874-pre1</PackageVersion>
+
+    <PackageLicenseUrl>LINK TO LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/angpysha/Xamarin.Forms.Shell.WPF</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/angpysha/Xamarin.Forms.Shell.WPF</RepositoryUrl>
+    <!--<PackageReleaseNotes>RELEASE NOTES</PackageReleaseNotes>
+    <PackageIconUrl>ICON URL</PackageIconUrl>-->
+    <PackageTags>Xamarin Forms; Xamarin Forms Shell; Xamarin Forms WPF</PackageTags>
+
+    <Title>Xamarin Forms Shell WPF</Title>
+    <!--<Summary>Summary of nuget</Summary>-->
+    <Description>Xamarin Forms Shell for WPF</Description>
+
+
+    <Owners>Andrii Petrovskyi</Owners>
+    <Authors>Andrii Petrovskyi</Authors>
+    <Copyright>Copyright 2021</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,6 +4,7 @@
        xmlns:local="clr-namespace:ShellAppWPF.Views"
        Title="ShellAppWPF"
        x:Class="ShellAppWPF.AppShell"
+       
 >
     <!--FlyoutBackgroundImage="yoda.jpeg"
     FlyoutBackgroundImageAspect="AspectFill"-->
