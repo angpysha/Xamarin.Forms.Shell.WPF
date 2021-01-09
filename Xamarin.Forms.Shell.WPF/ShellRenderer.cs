@@ -97,13 +97,19 @@ namespace ShellWpfApp.WPF.Shell
             SetFlayoutFooter();
             SetFlyoutBackground();
             Control.UpdateFlayoutItems();
+            UpdateTitleBarBackground();
             shellController.AddAppearanceObserver(this,Element);
             shellController.AddFlyoutBehaviorObserver(this);
             Control.ItemContent.Content = ShellItem = new ShellItemRenderer();
-            ShellItem.ShellContext = this;
+            ShellItem.SetShellContext(this);
             ShellItem.InitShellData();
             SwitchShellItem(Element.CurrentItem);
            // SetHeader();
+        }
+
+        private void UpdateTitleBarBackground()
+        {
+            
         }
 
         private async void SetFlyoutBackground()

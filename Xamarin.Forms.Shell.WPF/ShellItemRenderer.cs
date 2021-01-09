@@ -14,6 +14,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.WPF;
 using WpfGrid = System.Windows.Controls.Grid;
+using WBrush = System.Windows.Media.Brush;
 
 namespace ShellWpfApp.WPF.Shell
 {
@@ -122,6 +123,23 @@ namespace ShellWpfApp.WPF.Shell
         //  ShellSectionRenderer.Shell = ShellContext?.Element;
         }
 
+        public void SetShellContext(ShellRenderer shellRenderer)
+        {
+
+            if (ShellContext != null)
+            {
+                ((IShellController) ShellContext.Element).RemoveAppearanceObserver(this);
+                ((IShellController) ShellContext.Element).RemoveFlyoutBehaviorObserver(this);
+            }
+            ShellContext = shellRenderer;
+            if (ShellContext != null)
+            {
+                ((IShellController)ShellContext.Element).AddAppearanceObserver(this,ShellContext.Element);
+                ((IShellController)ShellContext.Element).AddFlyoutBehaviorObserver(this);
+            }
+
+        }
+
         public void OnFlyoutBehaviorChanged(FlyoutBehavior behavior)
         {
             
@@ -129,7 +147,23 @@ namespace ShellWpfApp.WPF.Shell
 
         public void OnAppearanceChanged(ShellAppearance appearance)
         {
-            
+            WBrush tabbarBackgroundColor = new System.Windows.Media.SolidColorBrush(Colors.White);
+            WBrush tabbarForegroundColor = new System.Windows.Media.SolidColorBrush(Colors.Black);
+            WBrush tabbarTitleColor = new System.Windows.Media.SolidColorBrush(Colors.Black);
+            if (appearance != null)
+            {
+                var a = (IShellAppearanceElement) appearance;
+                tabbarBackgroundColor = a.EffectiveTabBarBackgroundColor.ToBrush();
+                tabbarForegroundColor = a.EffectiveTabBarForegroundColor.ToBrush();
+                tabbarTitleColor = a.EffectiveTabBarTitleColor.ToBrush();
+            }
+
+            ShellContext.Control.TitleBarBackgroundColor = tabbarBackgroundColor;
+            ShellContext.Control.TabBarForeground = tabbarForegroundColor;
+            if (ShellSection is IAppearanceObserver iao)
+            {
+                iao.OnAppearanceChanged(appearance);
+            }
         }
 
         public void NavigateToShellItem(ShellItem shellItem, bool animated = false)

@@ -294,6 +294,7 @@ namespace ShellWpfApp.WPF.Shell
             }
             else
             {
+                //
                 //  ((IEnumerable<object>)SectionFrame.BackStack).
             }
         }

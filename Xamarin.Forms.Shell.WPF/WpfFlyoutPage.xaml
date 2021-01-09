@@ -21,7 +21,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid Background="{x:Static wpf:Contants.PrimaryColor}"
+        <Grid Background="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=TitleBarBackgroundColor}"
               x:Name="NavBarContainer">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -155,6 +155,7 @@
             <Grid Grid.Column="3">
                 <local:WPFToolbarItems 
                     x:Name="ToolbarItemsMenu"
+                    TitleItemBrush="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=TabBarForeground}"
                     ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=ToolbarItems}">
 
                 </local:WPFToolbarItems>

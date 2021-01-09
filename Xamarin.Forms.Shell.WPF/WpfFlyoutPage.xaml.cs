@@ -41,13 +41,28 @@ namespace ShellWpfApp.WPF.Shell
             typeof(WpfFlyoutPage),
             new PropertyMetadata(false,OnFlyoutOpenChangedStatic));
 
+        public static readonly DependencyProperty TabBarForegroundProperty = 
+            DependencyProperty.Register(nameof(TabBarForeground),
+                typeof(WBrush),
+                typeof(WpfFlyoutPage),
+                new FrameworkPropertyMetadata(new System.Windows.Media.SolidColorBrush(Colors.Black)));
+
+        //public static readonly DependencyProperty TitleBarBackgroundProperty = DependencyProperty.Register(nameof(TitleBarBackground),
+        //    typeof(WBrush),
+        //    typeof(WpfFlyoutPage),
+        //    new PropertyMetadata(new System.Windows.Media.SolidColorBrush(Colors.White)));
+
         //public static readonly DependencyProperty ToolbarItemsProperty = DependencyProperty.Register(nameof(ToolbarItems),
         //    typeof(IEnumerable<object>),
         //    typeof(WpfFlyoutPage),
         //    new PropertyMetadata(default));
 
 
-
+        public WBrush TabBarForeground
+        {
+            get => (WBrush) GetValue(TabBarForegroundProperty);
+            set => SetValue(TabBarForegroundProperty, value);
+        }
         private static void OnFlyoutOpenChangedStatic(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
 
@@ -66,6 +81,12 @@ namespace ShellWpfApp.WPF.Shell
         //{
         //    get => (IEnumerable<object>) GetValue(ToolbarItemsProperty);
         //    set => SetValue(ToolbarItemsProperty, value);
+        //}
+
+        //public WBrush TitleBarBackground
+        //{
+        //    get => (WBrush) GetValue(TitleBarBackgroundProperty);
+        //    set => SetValue(TitleBarBackgroundProperty, value);
         //}
         public ObservableCollection<object> ToolbarItems { get; set; }
         public bool FlyoutIsOpened
