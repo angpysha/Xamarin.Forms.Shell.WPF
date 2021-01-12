@@ -18,7 +18,7 @@ using WBrush = System.Windows.Media.Brush;
 
 namespace ShellWpfApp.WPF.Shell
 {
-    public class ShellItemRenderer : ShellItemView,IFlyoutBehaviorObserver,IAppearanceObserver, INotifyPropertyChanged
+    public class ShellItemRenderer : ShellItemView,IAppearanceObserver, INotifyPropertyChanged
     {
         
         internal ShellRenderer ShellContext { get; set; }
@@ -129,21 +129,15 @@ namespace ShellWpfApp.WPF.Shell
             if (ShellContext != null)
             {
                 ((IShellController) ShellContext.Element).RemoveAppearanceObserver(this);
-                ((IShellController) ShellContext.Element).RemoveFlyoutBehaviorObserver(this);
             }
             ShellContext = shellRenderer;
             if (ShellContext != null)
             {
                 ((IShellController)ShellContext.Element).AddAppearanceObserver(this,ShellContext.Element);
-                ((IShellController)ShellContext.Element).AddFlyoutBehaviorObserver(this);
             }
 
         }
 
-        public void OnFlyoutBehaviorChanged(FlyoutBehavior behavior)
-        {
-            
-        }
 
         public void OnAppearanceChanged(ShellAppearance appearance)
         {

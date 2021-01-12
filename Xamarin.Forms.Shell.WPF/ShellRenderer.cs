@@ -14,6 +14,7 @@ using Xamarin.Forms.Platform.WPF.Controls;
 using Xamarin.Forms.Platform.WPF.Extensions;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
+using Grid = System.Windows.Controls.Grid;
 using SolidColorBrush = System.Windows.Media.SolidColorBrush;
 using Stretch = System.Windows.Media.Stretch;
 using WBrush = System.Windows.Media.Brush;
@@ -106,6 +107,7 @@ namespace ShellWpfApp.WPF.Shell
             SetFlyoutHeader();
             SetFlayoutFooter();
             SetFlyoutBackground();
+            SetFlyoutSize();
             Control.UpdateFlayoutItems();
             UpdateTitleBarBackground();
             shellController.AddAppearanceObserver(this,Element);
@@ -115,6 +117,15 @@ namespace ShellWpfApp.WPF.Shell
             ShellItem.InitShellData();
             SwitchShellItem(Element.CurrentItem);
            // SetHeader();
+        }
+
+        private void SetFlyoutSize()
+        {
+
+            if (Element.FlyoutWidth != -1)
+            {
+                Control.FlyoutWidth = (float)Element.FlyoutWidth;
+            }
         }
 
         private void UpdateTitleBarBackground()
@@ -224,7 +235,37 @@ namespace ShellWpfApp.WPF.Shell
 
         public void OnFlyoutBehaviorChanged(FlyoutBehavior behavior)
         {
+            if (behavior == FlyoutBehavior.Disabled)
+            {
+                Control.hamburger.Visibility = Visibility.Collapsed;
+                Control.FlyoutView.Margin = new System.Windows.Thickness(-250, 0, 0, 0);
+                Control.FlyoutView.Visibility = Visibility.Collapsed;
+            }
+            else if (behavior == FlyoutBehavior.Flyout)
+            {
+                Grid.SetColumn(Control.ContentControlContainer,0);
+                Grid.SetColumn(Control.COntainerGrid,0);
+                Grid.SetColumn(Control.FlyoutView,0);
+                Grid.SetColumnSpan(Control.COntainerGrid,2);
+                Grid.SetColumnSpan(Control.ContentControlContainer,2);
+                Grid.SetColumnSpan(Control.FlyoutView,2);
+                Control.FlyoutView.Margin = new System.Windows.Thickness(-250,0,0,0);
+                Control.FlyoutView.Visibility = Visibility.Collapsed;
+                Control.hamburger.Visibility = Visibility.Visible;
 
+            }
+            else
+            {
+                Grid.SetColumn(Control.ContentControlContainer, 1);
+                Grid.SetColumn(Control.COntainerGrid, 1);
+                Grid.SetColumn(Control.FlyoutView, 0);
+                Control.FlyoutView.Margin = new System.Windows.Thickness(0);
+                Control.FlyoutView.Visibility = Visibility.Visible;
+                Grid.SetColumnSpan(Control.COntainerGrid, 1);
+                Grid.SetColumnSpan(Control.ContentControlContainer, 1);
+                Grid.SetColumnSpan(Control.FlyoutView, 1);
+                Control.hamburger.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

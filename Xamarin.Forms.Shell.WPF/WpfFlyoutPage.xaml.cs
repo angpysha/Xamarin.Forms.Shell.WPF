@@ -18,8 +18,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ShellAppWPF.Helpers;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.WPF;
 using Xamarin.Forms.Platform.WPF.Controls;
+using DataTemplate = System.Windows.DataTemplate;
 using Grid = System.Windows.Controls.Grid;
 using SelectionChangedEventArgs = System.Windows.Controls.SelectionChangedEventArgs;
 using WBrush = System.Windows.Media.Brush;
@@ -39,13 +41,26 @@ namespace ShellWpfApp.WPF.Shell
         public static readonly DependencyProperty FlyoutIsOpenedProperty = DependencyProperty.Register(nameof(FlyoutIsOpened),
             typeof(bool),
             typeof(WpfFlyoutPage),
-            new PropertyMetadata(false,OnFlyoutOpenChangedStatic));
+            new PropertyMetadata(false, OnFlyoutOpenChangedStatic));
 
-        public static readonly DependencyProperty TabBarForegroundProperty = 
+        public static readonly DependencyProperty TabBarForegroundProperty =
             DependencyProperty.Register(nameof(TabBarForeground),
                 typeof(WBrush),
                 typeof(WpfFlyoutPage),
                 new FrameworkPropertyMetadata(new System.Windows.Media.SolidColorBrush(Colors.Black)));
+
+        public static readonly DependencyProperty FlyoutHeightProperty = DependencyProperty.Register(nameof(FlyoutHeight),
+            typeof(float),
+            typeof(WpfFlyoutPage),
+            new FrameworkPropertyMetadata(-1f));
+
+        public static readonly DependencyProperty FlyoutWidthProperty = DependencyProperty.Register(nameof(FlyoutWidth),
+            typeof(float),
+            typeof(WpfFlyoutPage),
+            new FrameworkPropertyMetadata(-1f));
+
+        //  public static readonly DependencyProperty FlyoutItemTemplateProperty = DependencyProperty.Register(nameof());
+
 
         //public static readonly DependencyProperty TitleBarBackgroundProperty = DependencyProperty.Register(nameof(TitleBarBackground),
         //    typeof(WBrush),
@@ -57,10 +72,23 @@ namespace ShellWpfApp.WPF.Shell
         //    typeof(WpfFlyoutPage),
         //    new PropertyMetadata(default));
 
-
+        //public DataTemplate FlyoutItemTemplate
+        //{
+        //    get => (DataTemplate)
+        //}
+        public float FlyoutWidth
+        {
+            get => (float)GetValue(FlyoutWidthProperty);
+            set => SetValue(FlyoutWidthProperty, value);
+        }
+        public float FlyoutHeight
+        {
+            get => (float)GetValue(FlyoutHeightProperty);
+            set => SetValue(FlyoutHeightProperty, value);
+        }
         public WBrush TabBarForeground
         {
-            get => (WBrush) GetValue(TabBarForegroundProperty);
+            get => (WBrush)GetValue(TabBarForegroundProperty);
             set => SetValue(TabBarForegroundProperty, value);
         }
         private static void OnFlyoutOpenChangedStatic(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -68,12 +96,14 @@ namespace ShellWpfApp.WPF.Shell
 
             var page = d as WpfFlyoutPage;
             var bNew = ((bool)e.NewValue);
-            var bOld = (bool) e.OldValue;
+            var bOld = (bool)e.OldValue;
 
             if (bNew != bOld)
             {
                 page?.UpdatePaneVisibility();
             }
+
+
         }
 
 
@@ -88,21 +118,46 @@ namespace ShellWpfApp.WPF.Shell
         //    get => (WBrush) GetValue(TitleBarBackgroundProperty);
         //    set => SetValue(TitleBarBackgroundProperty, value);
         //}
+
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+
+            if (e.Property.Name == FlyoutWidthProperty.Name)
+            {
+                FlyoutView.Width = FlyoutWidth;
+            }
+        }
+
         public ObservableCollection<object> ToolbarItems { get; set; }
         public bool FlyoutIsOpened
         {
-            get => (bool) GetValue(FlyoutIsOpenedProperty);
+            get => (bool)GetValue(FlyoutIsOpenedProperty);
             set => SetValue(FlyoutIsOpenedProperty, value);
         }
         public WBrush FlyoutBackground
         {
-            get => (WBrush) GetValue(FlyoutBackgroundProperty);
+            get => (WBrush)GetValue(FlyoutBackgroundProperty);
             set => SetValue(FlyoutBackgroundProperty, value);
         }
         public ContentControl ItemContent => ContentControl;
         public ObservableCollection<BaseShellItem> FlyoutItems { get; set; }
 
         public WeakReference<Xamarin.Forms.Shell> Shell { get; set; }
+
+        public Xamarin.Forms.Shell ShellValue 
+        {
+            get
+            {
+                if (Shell.TryGetTarget(out var shell))
+                {
+                    return shell;
+                }
+
+                return null;
+            }
+        }
 
         public WpfFlyoutPage()
         {
@@ -123,13 +178,32 @@ namespace ShellWpfApp.WPF.Shell
         {
             if (Shell.TryGetTarget(out var shell))
             {
-           //     var items = shell.Items.OfType<FlyoutItem>().ToList();
-           var items = shell.Items.ToList();
+                //     var items = shell.Items.OfType<FlyoutItem>().ToList();
+                var itemTemplate = shell.ItemTemplate;
+
+                if (itemTemplate != null)
+                {
+                    var formsContetn = itemTemplate.CreateContent() as View;
+                    var template =
+                        (System.Windows.DataTemplate) System.Windows.Application.Current.Resources[
+                            "FlayoutItemTemplate"];
+                    FlyoutListView.ItemTemplate = template;
+                    //  var template = Registrar.Registered.GetHandlerForObject<IViewCell>()
+                }
+                else
+                {
+                    var template =
+                        (System.Windows.DataTemplate) System.Windows.Application.Current.Resources[
+                            "DefaultFlyoutItemTemplate"];
+                    FlyoutListView.ItemTemplate = template;
+                }
+                var items = shell.Items.ToList();
                 FlyoutItems.Clear();
                 foreach (var flyoutItem in items)
                 {
                     FlyoutItems.Add(flyoutItem);
-                    
+
+
                 }
 
                 var appbarInfo = (ParentWindow).GetType().BaseType.BaseType
@@ -141,7 +215,7 @@ namespace ShellWpfApp.WPF.Shell
                 //var currTileInfo = ParentWindow.GetType().BaseType.BaseType.GetProperty("CurrentTitle");
                 //var borderInfo = (ParentWindow).GetType().BaseType.BaseType.GetField("BorderWindow", BindingFlags.Instance | BindingFlags.NonPublic);
                 var tempalte = ParentWindow.Template;
-                var border = tempalte.FindName("BorderWindow",ParentWindow) as Border;
+                var border = tempalte.FindName("BorderWindow", ParentWindow) as Border;
                 //var itemmm = ParentWindow.InternalChildren;
                 border.BorderBrush = ResourcesHelper.PrimaryColor.ToBrush();
                 var commandBar = tempalte.FindName("PART_CommandsBar", ParentWindow) as Grid;
@@ -214,15 +288,18 @@ namespace ShellWpfApp.WPF.Shell
 
             if (Shell.TryGetTarget(out var shell))
             {
-                var shectr = ((IShellController) shell);
+                var shectr = ((IShellController)shell);
                 shectr.OnFlyoutItemSelected(item);
-                Hambrger_OnClick(this,null);
+                if (shell.FlyoutBehavior == FlyoutBehavior.Flyout)
+                {
+                    Hambrger_OnClick(this, null);
+                }
             }
         }
 
         public void UpdateTitle(string title)
         {
-         //   if (Xamarin.Forms.Shell.GetTitleView(Page))
+            //   if (Xamarin.Forms.Shell.GetTitleView(Page))
             PageTitleLabel.Content = title;
             CustomTitleContent.Visibility = Visibility.Collapsed;
             PageTitleLabel.Visibility = Visibility.Visible;
@@ -237,8 +314,8 @@ namespace ShellWpfApp.WPF.Shell
 
         private void COntainerGrid_OnTouchDown(object sender, TouchEventArgs e)
         {
-            
-            Hambrger_OnClick(this,null);
+
+            Hambrger_OnClick(this, null);
         }
 
         private void COntainerGrid_OnMouseDown(object sender, MouseButtonEventArgs e)

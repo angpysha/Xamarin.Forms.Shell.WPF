@@ -30,13 +30,16 @@
     <Owners>Andrii Petrovskyi</Owners>
     <Authors>Andrii Petrovskyi</Authors>
     <Copyright>Copyright 2021</Copyright>
+    <RootNamespace>Xamarin.Forms.ShellWPF</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="FlyoutItemView.xaml" />
     <EmbeddedResource Remove="ShellFlyoutSeparator.xaml" />
     <EmbeddedResource Remove="ShellItemView.xaml" />
     <EmbeddedResource Remove="ShellPageWrapper.xaml" />
     <EmbeddedResource Remove="ShellSectionView.xaml" />
+    <EmbeddedResource Remove="ShellWPFResources.xaml" />
     <EmbeddedResource Remove="WpfFlyoutPage.xaml" />
   </ItemGroup>
 

@@ -4,6 +4,8 @@
        xmlns:local="clr-namespace:ShellAppWPF.Views"
        Title="ShellAppWPF"
        x:Class="ShellAppWPF.AppShell"
+       NavBarHasShadow="True"
+       FlyoutBehavior="Locked"
        
 >
     <!--FlyoutBackgroundImage="yoda.jpeg"
@@ -13,7 +15,23 @@
     
         https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/
     -->
-
+    <Shell.ItemTemplate>
+        <DataTemplate x:DataType="BaseShellItem">
+            <StackLayout Orientation="Horizontal">
+                <BoxView HeightRequest="35" WidthRequest="5"
+                         Color="DeepSkyBlue" IsVisible="{Binding IsChecked}"></BoxView>
+                <Image Source="{Binding Icon}" HeightRequest="35"
+                       WidthRequest="35"></Image>
+                <Label Text="{Binding Title}"
+                       VerticalOptions="Center"></Label>
+            </StackLayout>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+    <Shell.FlyoutContent>
+        <StackLayout HeightRequest="150"
+                     HorizontalOptions="FillAndExpand"
+                     BackgroundColor="Coral"></StackLayout>
+    </Shell.FlyoutContent>
     <Shell.Resources>
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">

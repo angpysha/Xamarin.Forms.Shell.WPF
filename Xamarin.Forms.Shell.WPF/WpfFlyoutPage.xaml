@@ -13,7 +13,7 @@
              x:Name="FormsPageXamlWpf"
              d:DesignHeight="450" d:DesignWidth="800">
     <controls:FormsContentPage.Resources>
-        <local:XFImageSourceToWpfImageSourceConverter x:Key="XfImageSourceToWpfImageSourceConverter"></local:XFImageSourceToWpfImageSourceConverter>
+      
     </controls:FormsContentPage.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -138,7 +138,7 @@
                                Foreground="White"></Label>
                     </StackPanel>
                 </Button>
-              
+
             </Grid>
             <Label x:Name="PageTitleLabel"
                    Content="Title"
@@ -161,61 +161,76 @@
                 </local:WPFToolbarItems>
             </Grid>
         </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
 
-        <Grid Grid.Row="1" x:Name="ContentControlContainer">
-            <ContentControl x:Name="ContentControl">
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="ContentControlContainer"
+                  Grid.ColumnSpan="2">
+                <ContentControl x:Name="ContentControl">
 
-            </ContentControl>
-        </Grid>
-        <Grid Grid.Row="1"
+                </ContentControl>
+            </Grid>
+            <Grid
+                Grid.ColumnSpan="2"
               Background="#22000000"
               x:Name="COntainerGrid"
               TouchDown="COntainerGrid_OnTouchDown"
               MouseDown="COntainerGrid_OnMouseDown"
               Visibility="Collapsed">
 
-        </Grid>
-        <Border Background="LightGray"
+            </Grid>
+            <Border Background="LightGray"
+                    Grid.ColumnSpan="2"
                 Width="250"
                 Margin="-250,0,0,0"
                 Visibility="Collapsed"
                 HorizontalAlignment="Left"
                Opacity="1"
-                Grid.Row="1"
+                
                 x:Name="FlyoutView"
         >
-            <Grid Background="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=FlyoutBackground}"
-              Width="250"
-              HorizontalAlignment="Left"
+                <Grid Background="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=FlyoutBackground}"
+              
+              HorizontalAlignment="Stretch"
               x:Name="FlyoutContainer">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <ContentControl x:Name="HeaderContent"></ContentControl>
-                <ListView Background="Transparent"
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ContentControl x:Name="HeaderContent"></ContentControl>
+                    <ListView Background="Transparent"
                       Grid.Row="1"
                       ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=FlyoutItems}"
                       SelectionChanged="Selector_OnSelectionChanged"
+                      x:Name="FlyoutListView"
             >
-                    <ListView.ItemTemplate>
-                        <DataTemplate >
-                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Image Source="{Binding Icon,Converter={StaticResource XfImageSourceToWpfImageSourceConverter}}"
-                                       Width="30"
-                                       Height="30"></Image>
-                                <Label Content="{Binding Title}"
+                        <!--<ListView.ItemTemplate>
+                            <DataTemplate >
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Rectangle Width="5"
+                                               Height="30"
+                                               Margin="5,0"
+                                               Fill="Aqua"
+                                               Visibility="{Binding IsChecked,Converter={StaticResource BooleanToVisibilityConverter}}"></Rectangle>
+                                    <Image Source="{Binding Icon,Converter={StaticResource XfImageSourceToWpfImageSourceConverter}}"
+                                           Width="30"
+                                           Height="30"></Image>
+                                    <Label Content="{Binding Title}"
                                    HorizontalAlignment="Center"
                                    FontSize="14"
                                    Foreground="Black"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <ContentPresenter x:Name="FooterControl"
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>-->
+                    </ListView>
+                    <ContentPresenter x:Name="FooterControl"
                                   Grid.Row="2"></ContentPresenter>
-            </Grid>
-        </Border>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </controls:FormsContentPage>
