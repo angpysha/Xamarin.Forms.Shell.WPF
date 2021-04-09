@@ -271,14 +271,14 @@ namespace ShellWpfApp.WPF.Shell
                 : Visibility.Collapsed;
             if (navBarVisible)
             {
-                WpfGrid.SetRow(ShellContext.Control.ContentControlContainer, 1);
-                WpfGrid.SetRowSpan(ShellContext.Control.ContentControlContainer, 1);
+                WpfGrid.SetRow(ShellContext.Control.FlyoutPageContent, 1);
+                WpfGrid.SetRowSpan(ShellContext.Control.FlyoutPageContent, 1);
 
             }
             else
             {
-                WpfGrid.SetRow(ShellContext.Control.ContentControlContainer, 0);
-                WpfGrid.SetRowSpan(ShellContext.Control.ContentControlContainer, 2);
+                WpfGrid.SetRow(ShellContext.Control.FlyoutPageContent, 0);
+                WpfGrid.SetRowSpan(ShellContext.Control.FlyoutPageContent, 2);
 
             }
 

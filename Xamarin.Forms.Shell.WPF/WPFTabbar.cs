@@ -27,7 +27,7 @@ namespace ShellWpfApp.WPF.Shell
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(nameof(ItemsSource),
             typeof(IEnumerable<object>),
             typeof(WPFTabbar),
-            new PropertyMetadata(default,OnItemsSourcePropertyChanged));
+            new PropertyMetadata(default, OnItemsSourcePropertyChanged));
 
         public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(nameof(ItemTemplate),
             typeof(DataTemplate),
@@ -59,24 +59,24 @@ namespace ShellWpfApp.WPF.Shell
         }
         private static void OnItemsSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var tabbar = d as WPFTabbar;
+        //    var tabbar = d as WPFTabbar;
 
 
-            var oldValue = e.OldValue as INotifyCollectionChanged;
-            var newValue = e.NewValue as INotifyCollectionChanged;
-            tabbar.OnItemsSourceChengedInternal(e.NewValue as IEnumerable<object>);
+        //    var oldValue = e.OldValue as INotifyCollectionChanged;
+        //    var newValue = e.NewValue as INotifyCollectionChanged;
+        //    tabbar.OnItemsSourceChengedInternal(e.NewValue as IEnumerable<object>);
 
 
-            if (oldValue != null)
-            {
-                oldValue.CollectionChanged -= tabbar.OnCollectionChanged;
-            }
+        //    if (oldValue != null)
+        //    {
+        //        oldValue.CollectionChanged -= tabbar.OnCollectionChanged;
+        //    }
 
-            if (newValue != null)
-            {
-                newValue.CollectionChanged += tabbar.OnCollectionChanged;
+        //    if (newValue != null)
+        //    {
+        //        newValue.CollectionChanged += tabbar.OnCollectionChanged;
 
-            }
+        //    }
         }
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -86,68 +86,71 @@ namespace ShellWpfApp.WPF.Shell
 
         protected virtual void UpdateTabbarCollection()
         {
-            if (ItemsSource.Count() == 0)
-            {
-                Children.Clear();
-                ColumnDefinitions.Clear();
-            }
-            else
-            {
-                ColumnDefinitions.Add(new ColumnDefinition()
-                {
-                    Width = new GridLength(1,GridUnitType.Star)
-                });
+            //if (ItemsSource.Count() == 0)
+            //{
+            //    Children.Clear();
+            //    ColumnDefinitions.Clear();
+            //}
+            //else
+            //{
+            //    ColumnDefinitions.Add(new ColumnDefinition()
+            //    {
+            //        Width = new GridLength(1, GridUnitType.Star)
+            //    });
 
-                if (ItemTemplate != null)
-                {
-                    var view = ItemTemplate.LoadContent();
-                    //var renderer = Platform.GetOrCreateRenderer(view);
+            //    if (ItemTemplate != null)
+            //    {
+            //        var view = ItemTemplate.LoadContent();
+            //        //var renderer = Platform.GetOrCreateRenderer(view);
 
-                }
-                else
-                {
-                    var view = new WpfGrid()
-                    {
-                        Height = 40,
-                        HorizontalAlignment = HorizontalAlignment.Stretch
-                    };
-                    var item = ((BaseShellItem) ItemsSource?.LastOrDefault());
-                    view.DataContext = item;
-                  //  var titleProperty = ItemsSource.LastOrDefault().GetType();
-                  var title = item?.Title;
-                  view.Children.Add(new Border()
-                  {
-                      Background = this.Background
-                  });
-                    view.Children.Add(new Label()
-                    {
-                        Content = title,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Bottom,
-                        FontSize = 13,
-                        Foreground = UnselectedColor
-                    });
+            //    }
+            //    else
+            //    {
+            //        var view = new WpfGrid()
+            //        {
+            //            Height = 40,
+            //            HorizontalAlignment = HorizontalAlignment.Stretch
+            //        };
+            //        var item = ((BaseShellItem)ItemsSource?.LastOrDefault());
+            //        view.DataContext = item;
+            //        //  var titleProperty = ItemsSource.LastOrDefault().GetType();
+            //        var title = item?.Title;
+            //        view.Children.Add(new Border()
+            //        {
+            //            Background = this.Background
+            //        });
+            //        view.Children.Add(new Label()
+            //        {
+            //            Content = title,
+            //            HorizontalAlignment = HorizontalAlignment.Center,
+            //            VerticalAlignment = VerticalAlignment.Bottom,
+            //            FontSize = 13,
+            //            Foreground = UnselectedColor
+            //        });
 
-                    view.MouseDown += ViewOnMouseDown;
+            //        view.MouseDown += ViewOnMouseDown;
+            //        WpfGrid.SetColumn(view, ColumnDefinitions.Count - 1);
 
-                    Children.Add(view);
-                   
-                    WpfGrid.SetColumn(view, ColumnDefinitions.Count-1);
-                }
-            }
+            //        Children.Add(view);
+
+            //    }
+            //}
         }
 
         public void SetActiveTab(int index, int prevIndex = 0)
         {
-            if (Children.Count > index)
+            int i = 0;
+            foreach (UIElement child in Children)
             {
-                var grid = Children[index] as WpfGrid;
+                var grid = child as WpfGrid;
                 var item = grid.Children.OfType<Label>().FirstOrDefault();
                 if (item != null)
                 {
-                    item.FontWeight = FontWeight.FromOpenTypeWeight(600);
-                    item.Foreground = ActiveColor;
+                    item.FontWeight = i == index ?FontWeight.FromOpenTypeWeight(600): FontWeight.FromOpenTypeWeight(400);
+                    item.Foreground = i == index ?ActiveColor : UnselectedColor;
                 }
+
+                i++;
             }
         }
 
@@ -167,15 +170,72 @@ namespace ShellWpfApp.WPF.Shell
 
         public IEnumerable<object> ItemsSource
         {
-            get => (IEnumerable<object>) GetValue(ItemsSourceProperty);
+            get => (IEnumerable<object>)GetValue(ItemsSourceProperty);
             set => SetValue(ItemsSourceProperty, value);
         }
 
         public DataTemplate ItemTemplate
         {
-            get => (DataTemplate) GetValue(ItemTemplateProperty);
+            get => (DataTemplate)GetValue(ItemTemplateProperty);
             set => SetValue(ItemTemplateProperty, value);
 
+        }
+
+        public async void SetTabItems(IList<ShellSection> items)
+        {
+
+            foreach (var item in items)
+            {
+                ColumnDefinitions.Add(new ColumnDefinition()
+                {
+                    Width = new GridLength(1, GridUnitType.Star)
+                });
+
+                if (ItemTemplate != null)
+                {
+                    var view = ItemTemplate.LoadContent();
+                    //var renderer = Platform.GetOrCreateRenderer(view);
+
+                }
+                else
+                {
+                    var view = new WpfGrid()
+                    {
+                        Height = 40,
+                        HorizontalAlignment = HorizontalAlignment.Stretch
+                    };
+                    view.DataContext = item;
+                    //  var titleProperty = ItemsSource.LastOrDefault().GetType();
+                    var title = item?.Title;
+                    var image = await item?.Icon.ToWindowsImageSourceAsync();
+                    view.Children.Add(new Border()
+                    {
+                        Background = this.Background
+                    });
+                    view.Children.Add(new System.Windows.Controls.Image()
+                    {
+                        Source = image,
+                        Height = 20,
+                        Width = 20,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    });
+                    view.Children.Add(new Label()
+                    {
+                        Content = title,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        FontSize = 13,
+                        Foreground = UnselectedColor,
+                        FontWeight = FontWeight.FromOpenTypeWeight(400)
+                    });
+
+                    view.MouseDown += ViewOnMouseDown;
+                    WpfGrid.SetColumn(view, ColumnDefinitions.Count - 1);
+
+                    Children.Add(view);
+                }
+            }
         }
     }
 

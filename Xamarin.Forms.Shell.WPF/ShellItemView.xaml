@@ -7,7 +7,7 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="White">
+             Background="Transparent">
     <Grid.Resources>
     </Grid.Resources>
     <Grid.RowDefinitions>
@@ -16,7 +16,8 @@
        <RowDefinition Height="40"></RowDefinition>
     </Grid.RowDefinitions>
     <Grid x:Name="SectionGrid">
-        <ContentControl x:Name="SectionControl" x:FieldModifier="public">
+        <ContentControl x:Name="SectionControl" x:FieldModifier="public"
+                        >
 
         </ContentControl>
     </Grid>
@@ -63,9 +64,16 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <local:WPFTabbar ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:ShellItemView}},Path=ShellSections,Mode=TwoWay}"
+            <local:WPFTabbar 
                              x:Name="WpfTabbar"
-                             OnItemClick="WpfTabbar_OnOnItemClick"></local:WPFTabbar>
+                             OnItemClick="WpfTabbar_OnOnItemClick">
+                <local:WPFTabbar.Effect>
+                    <DropShadowEffect BlurRadius="5" Color="LightGray"
+                                      Opacity="0.8"
+                                      ShadowDepth="3"
+                                      Direction="270"></DropShadowEffect>
+                </local:WPFTabbar.Effect>
+            </local:WPFTabbar>
         </Grid>
     </Border>
 </Grid>

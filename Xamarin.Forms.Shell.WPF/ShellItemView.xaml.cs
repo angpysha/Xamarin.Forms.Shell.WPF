@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Xaml.Behaviors.Core;
+using ShellWpfApp.Helpers;
 using ShellWpfApp.WPF.Annotations;
 using Xamarin.Forms;
 using SelectionChangedEventArgs = System.Windows.Controls.SelectionChangedEventArgs;
@@ -30,9 +31,9 @@ namespace ShellWpfApp.WPF.Shell
         internal ShellItem ShellItem { get; set; }
         IShellItemController ShellItemController => ShellItem;
 
-        private ObservableCollection<ShellSection> _shellSections;
+        private ObservableCollectionEx<ShellSection> _shellSections;
 
-        public ObservableCollection<ShellSection> ShellSections
+        public ObservableCollectionEx<ShellSection> ShellSections
         {
             get => _shellSections;
             set
@@ -79,7 +80,7 @@ namespace ShellWpfApp.WPF.Shell
         public ShellItemView()
         {
             InitializeComponent();
-            ShellSections = new ObservableCollection<ShellSection>();
+            ShellSections = new ObservableCollectionEx<ShellSection>();
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

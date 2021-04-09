@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Xamarin.Forms.ShellWPF">
+                    xmlns:local="clr-namespace:Xamarin.Forms.ShellWPF"
+                    xmlns:shell="clr-namespace:ShellWpfApp.WPF.Shell">
+    <shell:TabWidthConverter x:Key="TabWidthConverter"></shell:TabWidthConverter>
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Themes/Generic.xaml"></ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>

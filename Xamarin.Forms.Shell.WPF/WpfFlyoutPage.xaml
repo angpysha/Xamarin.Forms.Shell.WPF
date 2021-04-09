@@ -11,11 +11,13 @@
              mc:Ignorable="d" 
              Title="fda"
              x:Name="FormsPageXamlWpf"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="Transparent"
+             >
     <controls:FormsContentPage.Resources>
       
     </controls:FormsContentPage.Resources>
-    <Grid Background="White">
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -161,7 +163,7 @@
                 </local:WPFToolbarItems>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="FlyoutPageContent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -169,7 +171,10 @@
             </Grid.ColumnDefinitions>
             <Grid x:Name="ContentControlContainer"
                   Grid.ColumnSpan="2">
-                <ContentControl x:Name="ContentControl">
+                <ContentControl x:Name="ContentControl" HorizontalContentAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                HorizontalAlignment="Stretch">
 
                 </ContentControl>
             </Grid>
@@ -207,7 +212,12 @@
                       ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type local:WpfFlyoutPage}},Path=FlyoutItems}"
                       SelectionChanged="Selector_OnSelectionChanged"
                       x:Name="FlyoutListView"
-            >
+                      ItemContainerStyle="{StaticResource ListViewContainerStyle}">
+                        <!--<ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Height="10"></StackPanel>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>-->
                         <!--<ListView.ItemTemplate>
                             <DataTemplate >
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">

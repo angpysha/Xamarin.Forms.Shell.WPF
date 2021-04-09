@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!--<TargetFramework>netcoreapp3.1</TargetFramework>-->
     <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netcoreapp3.1;net472;</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">net472;</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netcoreapp3.1;</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -41,6 +41,16 @@
     <EmbeddedResource Remove="ShellSectionView.xaml" />
     <EmbeddedResource Remove="ShellWPFResources.xaml" />
     <EmbeddedResource Remove="WpfFlyoutPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="setting.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="setting.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

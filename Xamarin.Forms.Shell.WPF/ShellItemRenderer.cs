@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using ShellWpfApp.Helpers;
 using ShellWpfApp.WPF.Annotations;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -282,24 +283,24 @@ namespace ShellWpfApp.WPF.Shell
 
         public void UpdateBottomBar()
         {
-           // ((IList<object>)ShellSections)
-          //  ShellSections = new ObservableCollection<ShellSection>(ShellItem.Items);
-           // WpfTabbar.OnItemsSourceChengedInternal(ShellSections);
-            ShellSections.Clear();
-            var items = ShellItem.Items;
-            foreach (var shellSection in items)
+            if (ShellSections == null || ShellSections.Any() == false)
             {
-                ShellSections.Add(shellSection);
+                InitTabItems();
             }
-
-            //  WpfTabbar.ActiveColor = (ShellController as Xamarin.Forms.Shell)
             var tabBarColor = Xamarin.Forms.Shell.GetTabBarBackgroundColor(ShellItem);
             var activeColor = Xamarin.Forms.Shell.GetTabBarForegroundColor(ShellItem);
             var unselectedColor = Xamarin.Forms.Shell.GetTabBarUnselectedColor(ShellItem);
-            WpfTabbar.Background = tabBarColor.ToBrush();
+          //  WpfTabbar.Background = tabBarColor.ToBrush();
             WpfTabbar.UnselectedColor = unselectedColor.ToBrush();
             WpfTabbar.ActiveColor = activeColor.ToBrush();
             WpfTabbar.SetActiveTab(ShellSections.IndexOf(ShellSection));
+        }
+
+        private void InitTabItems()
+        {
+            var items = ShellItem.Items;
+            ShellSections.AddRange(items);
+            WpfTabbar.SetTabItems(items);
         }
     }
 }

@@ -54,8 +54,8 @@ namespace ShellWpfApp.WPF.Shell
                 if (Control == null)
                 {
 
-                      SetNativeControl(new WpfFlyoutPage());
-
+                    SetNativeControl(new WpfFlyoutPage());
+                        
                     //  Control.Content = 
                     if (Control.Shell == null)
                     {
@@ -63,11 +63,16 @@ namespace ShellWpfApp.WPF.Shell
                     }
                     OnElementSet();
 
-
+                    Control.SizeChanged += ControlOnSizeChanged;
 
                 }
             }
             base.OnElementChanged(e);
+        }
+
+        private void ControlOnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            
         }
 
         private void ShowFlaoutButton()
@@ -178,14 +183,16 @@ namespace ShellWpfApp.WPF.Shell
         private void SetFlyoutHeader()
         {
             FlyoutHeaderView = Element.FlyoutHeader as View;
-            
-            var headerRenderer = Platform.GetOrCreateRenderer(FlyoutHeaderView);
-            
-            var measet = FlyoutHeaderView.Measure(double.MaxValue, double.MaxValue);
-            var nativeContent = headerRenderer.GetNativeElement();
-            Control.HeaderContent.Content = nativeContent;
-            nativeContent.Loaded -= FlyoutHeaderLoaded;
-            nativeContent.Loaded += FlyoutHeaderLoaded;
+            if (FlyoutHeaderView != null)
+            {
+                var headerRenderer = Platform.GetOrCreateRenderer(FlyoutHeaderView);
+
+                var measet = FlyoutHeaderView.Measure(double.MaxValue, double.MaxValue);
+                var nativeContent = headerRenderer.GetNativeElement();
+                Control.HeaderContent.Content = nativeContent;
+                nativeContent.Loaded -= FlyoutHeaderLoaded;
+                nativeContent.Loaded += FlyoutHeaderLoaded;
+            }
 
 
         }

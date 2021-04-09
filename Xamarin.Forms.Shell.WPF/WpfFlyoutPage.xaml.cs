@@ -16,6 +16,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using OpenTK.Graphics.OpenGL;
 using ShellAppWPF.Helpers;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -173,9 +174,31 @@ namespace ShellWpfApp.WPF.Shell
             var Parentt = ParentWindow;
         }
 
-
+        private List<List<Element>> _flayoutGroupings;
         public void UpdateFlayoutItems()
         {
+            //void UpdateMenuItemSource()
+            //{
+            //    var newGrouping = ((IShellController)Shell).GenerateFlyoutGrouping();
+            //    if (_flyoutGrouping != newGrouping)
+            //    {
+            //        _flyoutGrouping = newGrouping;
+            //        var newItems = IterateItems(newGrouping).ToList();
+
+            //        foreach (var item in newItems)
+            //        {
+            //            if (!FlyoutItems.Contains(item))
+            //                FlyoutItems.Add(item);
+            //        }
+
+            //        for (var i = FlyoutItems.Count - 1; i >= 0; i--)
+            //        {
+            //            var item = FlyoutItems[i];
+            //            if (!newItems.Contains(item))
+            //                FlyoutItems.RemoveAt(i);
+            //        }
+            //    }
+            //}
             if (Shell.TryGetTarget(out var shell))
             {
                 //     var items = shell.Items.OfType<FlyoutItem>().ToList();
@@ -188,7 +211,6 @@ namespace ShellWpfApp.WPF.Shell
                         (System.Windows.DataTemplate) System.Windows.Application.Current.Resources[
                             "FlayoutItemTemplate"];
                     FlyoutListView.ItemTemplate = template;
-                    //  var template = Registrar.Registered.GetHandlerForObject<IViewCell>()
                 }
                 else
                 {
@@ -197,32 +219,63 @@ namespace ShellWpfApp.WPF.Shell
                             "DefaultFlyoutItemTemplate"];
                     FlyoutListView.ItemTemplate = template;
                 }
-                var items = shell.Items.ToList();
-                FlyoutItems.Clear();
-                foreach (var flyoutItem in items)
+
+                var itemsNew = ((IShellController) shell).GenerateFlyoutGrouping();
+                if (_flayoutGroupings != itemsNew)
                 {
-                    FlyoutItems.Add(flyoutItem);
-
-
+                    _flayoutGroupings = itemsNew;
+                    var _items = IterateItems(_flayoutGroupings);
+                    FlyoutItems.Clear();
+                    foreach (var item in _items)
+                    {
+                        FlyoutItems.Add((BaseShellItem)item);
+                    }
                 }
-
-                var appbarInfo = (ParentWindow).GetType().BaseType.BaseType
-                    .GetField("topAppBar", BindingFlags.Instance | BindingFlags.NonPublic);
-                var appbar = appbarInfo.GetValue(ParentWindow) as FormsAppBar;
-                //appbar.Background = new System.Windows.Media.SolidColorBrush(Colors.Red);
-                appbar.Visibility = Visibility.Collapsed;
-                //currentTitle
-                //var currTileInfo = ParentWindow.GetType().BaseType.BaseType.GetProperty("CurrentTitle");
-                //var borderInfo = (ParentWindow).GetType().BaseType.BaseType.GetField("BorderWindow", BindingFlags.Instance | BindingFlags.NonPublic);
                 var tempalte = ParentWindow.Template;
+                var appbar = tempalte.FindName("PART_TopAppBar", ParentWindow) as FormsAppBar; 
+                appbar.Visibility = Visibility.Collapsed;
+
                 var border = tempalte.FindName("BorderWindow", ParentWindow) as Border;
-                //var itemmm = ParentWindow.InternalChildren;
-                border.BorderBrush = ResourcesHelper.PrimaryColor.ToBrush();
+                //border.BorderBrush = ResourcesHelper.PrimaryColor.ToBrush();
                 var commandBar = tempalte.FindName("PART_CommandsBar", ParentWindow) as Grid;
-                commandBar.Background = ResourcesHelper.PrimaryColor.ToBrush();
+                //commandBar.Background = ResourcesHelper.PrimaryColor.ToBrush();
 
+               // UpdateItemsHeight();
 
+            }
+        }
 
+        //private void UpdateItemsHeight()
+        //{
+
+        //    var liviewItems = FlyoutListView.Items;
+
+        //    foreach (var liviewItem in liviewItems)
+        //    {
+        //        var lItem = liviewItem as ListViewItem;
+
+        //        var binding = lItem.DataContext;
+
+        //    }
+        //}
+
+        IEnumerable<object> IterateItems(List<List<Element>> groups)
+        {
+            int separatorNumber = 0;
+            foreach (var group in groups)
+            {
+                if (group.Count > 0 && group != groups[0])
+                {
+
+                    yield return new MenuSeparator()
+                    {
+
+                    }; // Creates a separator
+                }
+                foreach (var item in group)
+                {
+                    yield return item;
+                }
             }
         }
 
@@ -341,5 +394,10 @@ namespace ShellWpfApp.WPF.Shell
         {
             base.OnRenderSizeChanged(sizeInfo);
         }
+    }
+
+    internal class MenuSeparator : BaseShellItem
+    {
+        
     }
 }
